@@ -16,7 +16,7 @@ function index() {
             <Image width={180} height={180} src={"/Group 2.svg"} alt="" />
           </div>
 
-          <h1 className=" text-[70px] leading-[65px] tracking-wider w-[100%] font-ice font-medium text-white my-3">
+          <h1 className=" text-[70px] leading-[65px]  tracking-wider w-[100%] font-ice font-medium text-white my-3">
             {" "}
             Efficiency Redefined Through Automation
           </h1>
