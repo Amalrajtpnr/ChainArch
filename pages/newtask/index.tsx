@@ -3,8 +3,7 @@ import React from "react";
 function index() {
   return (
     <div className="h-[100vh] w-[100vw] bg-[#000000] absolute flex overflow-hidden ">
-      <div className=" h-[50px] w-[50px] bg-[#26E5FF] rounded-full absolute -top-28 opacity-30  overflow-hidden left-[100%]  shadow-[0px_0px_990px_350px_rgba(0,0,0,0.3)] shadow-[#26E5FF]  "></div>
-      <div className=" h-[10px] w-[10px] bg-[#26E5FF] rounded-full absolute top-72 opacity-30  shadow-[0px_0px_890px_150px_rgba(0,0,0,0.3)] shadow-[#26E5FF]   overflow-hidden -left-16 "></div>
+      <div className=" h-[50px] w-[50px] bg-[#26E5FF] rounded-full absolute -top-28  opacity-40  overflow-hidden left-[95%]  shadow-[0px_0px_790px_350px_rgba(0,0,0,0.3)] shadow-[#B200FF]"></div>
       <div className=" h-[100vh] w-[100vw] bg-transparent fixed top-0 z-100 backdrop-blur-[10px] flex justify-between items-center">
         <div className="h-[87%] w-[37%] border-2 border-yellow-500 rounded-xl bg-[#022628] flex justify-evenly items-center flex-col">
           <h1 className=" font-inter  drop-shadow-text font-bold text-2xl text-[#022628] outline-4 outline-zinc-100 ">
