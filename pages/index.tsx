@@ -1,7 +1,5 @@
 import React from "react";
-import Button from "../Components/Button";
 import Image from "next/image";
-import Header from "../Components/Header";
 
 function index() {
   return (
