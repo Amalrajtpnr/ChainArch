@@ -35,7 +35,7 @@ function index() {
           <div className="h-[150px] w-[85%] flex items-start justify-between flex-col relative">
             <h1 className="text-white text-sm font-bold my-1">ABI</h1>
             <textarea
-              className="h-[100%] w-[100%] bg-[#0E0E0E]  flex  text-sm text-white rounded-xl  pl-3 pt-3 box-border"
+              className="h-[100%] w-[100%] bg-[#0E0E0E]  flex  text-sm text-white rounded-xl  pl-3 pt-3 box-border scrollbar-hide"
               name="ABI"
               id=""
               cols={30}

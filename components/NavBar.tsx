@@ -37,10 +37,10 @@ function NavBar() {
         <h1 onClick={()=>router.push("/contactUs")} className="text-white text-[18px] md:text-[15px] md:font-semibold   font-bold font-inter">
           Contact Us
         </h1>
-        <button className="text-white text-[18px] md:text-[15px] md:font-semibold md:[30%] w-[20%] h-[50px] rounded-[18px] border  border-[#8C3BBE]  font-bold font-inter">
+        <button className="text-white text-[18px] md:text-[15px] md:font-semibold md:[30%] w-[19%] h-[45px] rounded-[18px] border  border-[#8C3BBE]  font-bold font-inter">
           0x..edfdyshggh
         </button>
-        <button className="text-white text-[18px] md:text-[15px] md:font-semibold   w-[20%] h-[50px] bg-[#8C3BBE] rounded-[18px] border border-[#8C3BBE] mr-[20px]  font-bold font-inter">
+        <button className="text-white text-[18px] md:text-[15px] md:font-semibold   w-[19%] h-[45px] bg-gradient-to-r from-[#2C004F] to-[#BD06FD] rounded-[18px] mr-[20px]  font-bold font-inter">
           Disconnect
         </button>
       </div>
