@@ -31,7 +31,7 @@ function NavBar() {
         <h1 onClick={()=>router.push("/Dashboard")} className="text-white text-[18px] md:text-[15px] md:font-semibold font-bold font-inter">
           Dashboard
         </h1>
-        <h1 onClick={()=>router.push("/creatingAutomation")} className="text-white text-[18px] md:text-[15px] md:font-semibold   font-bold font-inter">
+        <h1 onClick={()=>router.push("/creatingAutomation")} className="text-white text-[18px] md:text-[15px] md:font-semibold   font-bold font-inter hover:text-blue-700 hover:underline">
           Docs{" "}
         </h1>
         <h1 onClick={()=>router.push("/contactUs")} className="text-white text-[18px] md:text-[15px] md:font-semibold   font-bold font-inter">
