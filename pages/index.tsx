@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import NavBar from "../components/NavBar";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
 
 function Home() {
 
@@ -58,4 +59,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default dynamic(() => Promise.resolve(Home),{ssr:false});

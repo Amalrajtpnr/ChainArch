@@ -1,11 +1,35 @@
 import { useAccountModal, useConnectModal } from "@rainbow-me/rainbowkit";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 
 function NavBar() {
+  const router=useRouter()
+
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    const handleScroll = () => {
+      const currentScrollPos = window.pageYOffset;
+      setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 15 );
+      setPrevScrollPos(currentScrollPos);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setVisible(false);
+      }, 30000); 
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [prevScrollPos, visible]);
   const { openConnectModal } = useConnectModal();
   const { address, isConnected } = useAccount();
   const { openAccountModal } = useAccountModal();
+    
   return (
     <div className="min-h-[125px]  w-[100vw] lg:min-h-[125px]  lg:w-[100vw]  sm:min-h-[30px]   flex flex-row justify-end  items-center fixed -top-1 z-100 bg-transparent ">
       <div className="w-[60%] h-[120px] sm:min-h-[30px]  flex flex-row justify-around  items-center">
