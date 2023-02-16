@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { CloseCircle } from "iconsax-react";
-import Transactionprogress from "./Transactionprogress";
-type props = { onClick: () => void; onSubmit: () => void };
+type props = { 
+  onClick: () => void;
+   onSubmit: () => void;
+   onChange:(e:any)=>void;
+   };
 
-function Addfund({ onClick, onSubmit }: props) {
-  const [adddfund, Setadddfund] = useState(false);
+function Addfund({ onClick, onSubmit,onChange }: props) {
   return (
     <div className=" h-[100vh] w-[100vw] flex items-center justify-center  backdrop-blur-3xl bg-[#000000db] fixed top-0 z-[1000]">
       <div className="h-[220px] w-[450px] bg-[#0E0E0E] border-[1px] border-[#ffffff41] rounded-xl flex flex-col items-center justify-evenly relative">
@@ -18,6 +20,7 @@ function Addfund({ onClick, onSubmit }: props) {
           Add Fund
         </h1>
         <input
+          onChange={onChange}
           className="h-[20%] w-[70%] bg-[#242424] rounded-xl  text-white text-sm flex items-center pl-24 "
           type="text"
           placeholder="Enter Amount"

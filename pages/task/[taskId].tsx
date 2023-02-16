@@ -19,20 +19,25 @@ import { useAccount, useContractEvent, useContractRead } from "wagmi";
 import { ABI } from "../../constants/constants";
 import Cancelled from "../../components/Cancelled";
 import { getContract, getSignedContract } from "../../utils/helper-function";
+import { useAppContext } from "../../contexts/AppContext";
+import { Status } from "../../constants/Types";
+import { ethers } from "ethers";
+import WithdrawModal from "../../components/FundWithDrawModal";
 
 type props = {
   id: string | number;
   autoTaskId: string | number;
 };
 
-function Task({ id }: props) {
-  const [optionsvisible, setoptionsvisible] = useState(false);
-  const [addfundvissible, Setaddfundvissible] = useState(false);
-  const [gaslimitvissible, Setgaslimitvissible] = useState(false);
+function Task({ id,autoTaskId }: props) {
+
+  const { optionsVisible,setOptionsVisible,setTaskModalVisible,taskModalVisible,gasLimitModalVisible,setGasLimitModalVisible,setWithdrawModalVisible,withdrawModalVisible } = useAppContext()
   const [txmodalVisible, setTxModalVisible] = useState(false);
   const [taskFromDB, setTaskFromDB] = useState<any>({});
   const [taskFromBC, setTaskFromBC] = useState<any>({});
   const [executions, setExecutions] = useState<any[]>([]);
+  const [txStatus, setTxStatus] = useState<Status>(null)
+  const [amount, setAmount] = useState("")
   const {address} = useAccount()
 
   // console.log(id.toString())
@@ -46,6 +51,44 @@ function Task({ id }: props) {
       getTaskFromDB();
     },
   });
+
+  useContractEvent({
+    address: `0x${contractAddress}`,
+    abi: ABI,
+    eventName: "GasLimitUpdated",
+    listener: async () => {
+      getTaskFromDB();
+    },
+  });
+
+  useContractEvent({
+    address: `0x${contractAddress}`,
+    abi: ABI,
+    eventName: "TaskFundWithdrawSuccess",
+    listener: async () => {
+      getTaskFromDB();
+    },
+  });
+
+  useContractEvent({
+    address: `0x${contractAddress}`,
+    abi: ABI,
+    eventName: "AutoTaskCancelled",
+    listener: async () => {
+      getTaskFromDB();
+    },
+  });
+
+  useContractEvent({
+    address: `0x${contractAddress}`,
+    abi: ABI,
+    eventName: "TaskFundingSuccess",
+    listener: async () => {
+      getTaskFromDB();
+    },
+  });
+
+
 
   const getTaskFromDB = async () => {
     await axios
@@ -61,6 +104,108 @@ function Task({ id }: props) {
      
   };
 
+  const addFunds = async() => {
+    try {
+      setOptionsVisible(false)
+      const executor = process.env.NEXT_PUBLIC_EXECUTOR;
+      setTaskModalVisible(false);
+      const {contract} = await getSignedContract();
+      setTxModalVisible(true)
+      setTxStatus("Initiated")
+      const tx = await contract.addFunds(1,executor,{value:ethers.utils.parseEther(amount) ,gasLimit:100000})
+      if(tx.confirmations == 0){
+        setTxStatus('Processing');
+      }
+      const receipt = await tx.wait(1);
+      const { gasUsed } = receipt
+      if(gasUsed){
+        setTxStatus('Completed');
+      }
+    } catch (error:any) {
+      if (error.message.toLowerCase().includes('user rejected transaction')) {
+        setTxStatus('Cancelled');
+      } else {
+        setTxStatus('Failed');
+      }
+    }
+  }
+
+
+  const updateGasLimit = async() => {
+    try {
+      setOptionsVisible(false)
+      setTaskModalVisible(false);
+      const {contract} = await getSignedContract();
+      setTxModalVisible(true)
+      setTxStatus("Initiated")
+      const tx = await contract.updateTaskGasLimit(parseInt(autoTaskId.toString()),amount,{gasLimit:100000})
+      if(tx.confirmations == 0){
+        setTxStatus('Processing');
+      }
+      const receipt = await tx.wait(1);
+      const { gasUsed } = receipt
+      if(gasUsed){
+        setTxStatus('Completed');
+      }
+    } catch (error:any) {
+      if (error.message.toLowerCase().includes('user rejected transaction')) {
+        setTxStatus('Cancelled');
+      } else {
+        setTxStatus('Failed');
+      }
+    }
+  }
+
+  const withdrawFunds = async() => {
+    try {
+      setOptionsVisible(false)
+      setTaskModalVisible(false);
+      const {contract} = await getSignedContract();
+      setTxModalVisible(true)
+      setTxStatus("Initiated")
+      const tx = await contract.withdrawFunds(parseInt(autoTaskId.toString()),{gasLimit:100000})
+      if(tx.confirmations == 0){
+        setTxStatus('Processing');
+      }
+      const receipt = await tx.wait(1);
+      const { gasUsed } = receipt
+      if(gasUsed){
+        setTxStatus('Completed');
+      }
+    } catch (error:any) {
+      if (error.message.toLowerCase().includes('user rejected transaction')) {
+        setTxStatus('Cancelled');
+      } else {
+        setTxStatus('Failed');
+      }
+    }
+  }
+
+  const cancelTask = async() => {
+    try {
+      setOptionsVisible(false)
+      setTaskModalVisible(false);
+      const {contract} = await getSignedContract();
+      setTxModalVisible(true)
+      setTxStatus("Initiated")
+      const tx = await contract.cancelAutomation(taskFromDB.address,{gasLimit:50000})
+      if(tx.confirmations == 0){
+        setTxStatus('Processing');
+      }
+      const receipt = await tx.wait(1);
+      const { gasUsed } = receipt
+      if(gasUsed){
+        setTxStatus('Completed');
+      }
+    } catch (error:any) {
+      if (error.message.toLowerCase().includes('user rejected transaction')) {
+        setTxStatus('Cancelled');
+      } else {
+        setTxStatus('Failed');
+      }
+    }
+  }
+
   useEffect(() => {
     if(address){
       getTaskFromDB();
@@ -73,29 +218,30 @@ function Task({ id }: props) {
 
       <div className=" h-[100vh] w-[100vw] bg-transparent fixed top-0 z-100 backdrop-blur-[10px] flex justify-center items-center">
         <NavBar />
-        {addfundvissible && (
+        {taskModalVisible && (
           <Addfund
+            onChange={(e) => {
+              setAmount(e.target.value)
+            }}
             onClick={() => {
-              Setaddfundvissible(!addfundvissible);
+              setTaskModalVisible(!taskModalVisible);
             }}
-            onSubmit={() => {
-              setTxModalVisible(true);
-              Setaddfundvissible(!addfundvissible);
-            }}
+            onSubmit={addFunds}
           />
         )}
-
-        {gaslimitvissible && (
+        {gasLimitModalVisible && (
           <Gaslimit
+          onChange={(e) => setAmount(e.target.value)}
             onClick={() => {
-              Setgaslimitvissible(!gaslimitvissible);
-              Setaddfundvissible(!addfundvissible);
+              setGasLimitModalVisible(false);
+              setTaskModalVisible(false);
             }}
+            onSubmit={updateGasLimit}
           />
         )}
         {txmodalVisible && (
           <Transactionprogress
-            status="Initiated"
+            status={txStatus}
             onBackButtonPress={() => setTxModalVisible(false)}
           />
         )}
@@ -105,43 +251,65 @@ function Task({ id }: props) {
             <h1 className="text-2xl font-bold text-white">
               {taskFromDB.taskName}
             </h1>
-            <Settings onClick={() => setoptionsvisible(!optionsvisible)} />
-            {optionsvisible && (
-              <div className="min-h-[29px] w-[110px] bg-[#2320207f] rounded-md absolute z-0 left-[245px] top-14 flex flex-col items-center justify-evenly border-[1px] border-[#ffffff40]">
+            <Settings onClick={() => setOptionsVisible(!optionsVisible)} />
+            {optionsVisible && (
+              taskFromBC?.state.toString() === "0"?(
+                <div className="min-h-[29px] w-[110px] bg-[#2320207f] rounded-md absolute z-0 left-[245px] top-14 flex flex-col items-center justify-evenly border-[1px] border-[#ffffff40]">
                 <div
                   onClick={() => {
-                    setoptionsvisible(false);
-                    Setaddfundvissible(!addfundvissible);
+                    setOptionsVisible(false);
+                    setTaskModalVisible(!taskModalVisible);
                   }}
-                  className="h-[29px] w-[110px] flex items-center justify-center border-b-[1px]  border-b-[#ffffff40] "
+                  className="cursor-pointer h-[29px] w-[110px] flex items-center justify-center border-b-[1px]  border-b-[#ffffff40] "
                 >
                   {" "}
                   <h1 className=" text-xs text-white font-medium">Add fund</h1>
                 </div>
                 <div
                   onClick={() => {
-                    setoptionsvisible(false);
-                    Setgaslimitvissible(!gaslimitvissible);
+                    setOptionsVisible(false);
+                    setGasLimitModalVisible(!gasLimitModalVisible);
                   }}
-                  className="h-[29px] w-[110px] flex items-center justify-center"
+                  className="cursor-pointer h-[29px] w-[110px] flex items-center justify-center border-b-[1px]  border-b-[#ffffff40]"
                 >
                   {" "}
                   <h1 className=" text-xs font-medium text-white">
                     Update Gas Limit
                   </h1>
                 </div>
+                <div
+                  onClick={cancelTask}
+                  className="cursor-pointer h-[29px] w-[110px] flex items-center justify-center"
+                >
+                  {" "}
+                  <h1 className=" text-xs font-medium text-white">
+                    Cancel Task
+                  </h1>
+                </div>
               </div>
+              ):(
+                <div className="min-h-[29px] w-[110px] bg-[#2320207f] rounded-md absolute z-0 left-[245px] top-14 flex flex-col items-center justify-evenly border-[1px] border-[#ffffff40]">
+                 <div
+                  onClick={withdrawFunds}
+                  className="cursor-pointer h-[29px] w-[110px] flex items-center justify-center"
+                >
+                  {" "}
+                  <h1 className=" text-xs font-medium text-white">
+                    WithDraw Funds
+                  </h1>
+                </div>
+                </div>
+              )
             )}
           </div>
 
-          { taskFromBC?.state?.toString() === "0"?<Active />:<Cancelled />}
+          { taskFromBC?.state?.toString() === "1"?<Cancelled />:<Active />}
           <Spanaddress
-          balance={taskFromBC?.funds?.toString()}
             creator={taskFromBC?.creator?.toString()}
             executions={executions.length}
             cost={taskFromBC?.totalCostForExec?.toString()}
           />
-          <Address target={taskFromDB.address}/>
+          <Address target={taskFromDB.address} balance={taskFromBC?.funds?.toString()} gasLimit={taskFromBC?.gasLimit?.toString()} />
         </div>
 
         <div className="h-[75%] w-[40%]  flex items-center justify-evenly flex-col  mr-36 mt-28 border-[1px] border-[#5b5757] rounded-[18px] bg-gradient-to-b from-[#2a1111] to-[#000000]  p-[2px] box-border ">

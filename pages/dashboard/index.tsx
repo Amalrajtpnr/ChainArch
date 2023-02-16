@@ -1,29 +1,114 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../../components/NavBar";
 import Image from "next/image";
 import TaskContainer from "../../components/TaskContainer";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
+import { getSignedContract } from "../../utils/helper-function";
+import { useAccount, useContractEvent } from "wagmi";
+import axios from "axios";
+import { ABI } from "../../constants/constants";
+
+
 function Dashboard() {
   const [active, setActive] = useState(false);
-  const router = useRouter()
+  const { address } = useAccount()
+  const router = useRouter();
+  const [tasks, setTasks] = useState<any[]>([])
+  const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
+
+  const getTasks = async() =>{
+    await axios.get(`http://localhost:5001/api/tasks`).then(async(res) => {
+      const { contract } = await getSignedContract()
+      const tasks = await contract.getAllTasks();
+      const filtered = tasks.filter((item:any) => item.creator.toString().toLowerCase() === address?.toLowerCase())
+      setTasks(filtered.map((item:any) => {
+        const task = res.data.filter((val:any) => val.address.toString()===item.taskAddress.toString())
+        return {
+          ...item,
+          id:task[0]?._id,
+          name: task[0]?.taskName
+        }
+      }))
+    })    
+  }
+
+
+  useContractEvent({
+    address: `0x${contractAddress}`,
+    abi: ABI,
+    eventName: "AutoTaskCancelled",
+    listener: async () => {
+      getTasks()
+    },
+  });
+
+  useContractEvent({
+    address: `0x${contractAddress}`,
+    abi: ABI,
+    eventName: "NewAutoTask",
+    listener: async () => {
+      getTasks()
+    },
+  });
+
+  useContractEvent({
+    address: `0x${contractAddress}`,
+    abi: ABI,
+    eventName: "TaskFundingSuccess",
+    listener: async () => {
+      getTasks()
+    },
+  });
+  
+
+  useContractEvent({
+    address: `0x${contractAddress}`,
+    abi: ABI,
+    eventName: "TaskFundWithdrawSuccess",
+    listener: async () => {
+      getTasks()
+    },
+  });
+  
+
+
+
+  useContractEvent({
+    address: `0x${contractAddress}`,
+    abi: ABI,
+    eventName: "TaskDetailsUpdated",
+    listener: async () => {
+      getTasks()
+    },
+  });
+
+  useEffect(() => {
+    if(address){
+      getTasks()
+    }
+  },[])
 
   function CheckActive() {
     if (active === true) {
       return(
         <div className="w-[90%] h-[480px] flex flex-col items-center justify-start gap-y-6  ">
-        <TaskContainer name="active"  active={active} />
-        <TaskContainer name="active"  active={active} />
-        <TaskContainer name="active"  active={active} />
-        
+        {
+          tasks.filter(item => item.state.toString() === "0").map((item,i) => (
+            <TaskContainer key={i} name={item.name} balance={item?.funds?.toString()} owner={item?.creator?.toString()} active={active} />
+          ))
+        }
       </div>
       )
     
     } else {
       return(
         <div className="w-[90%] h-[480px] flex flex-col items-center justify-start gap-y-6  ">
-        <TaskContainer name="cancelled" active={active}  />
-        <TaskContainer name="cancelled" active={active}  />
-        <TaskContainer name="cancelled" active={active}  />
+        {
+          tasks.filter(item => item.state.toString() === "1").map((item,i) => (
+            <TaskContainer key={i} name={item.name} balance={item?.funds?.toString()} owner={item?.creator?.toString()} active={active} />
+          ))
+        }
       </div>
       )
     
@@ -50,10 +135,10 @@ function Dashboard() {
             Create Task
           </button>
         </div>
-    <CheckActive/>
+      <CheckActive/>
       </div>
     </div>
   );
 }
 
-export default Dashboard;
+export default dynamic(() => Promise.resolve(Dashboard),{ssr:false});

@@ -81,7 +81,7 @@ function NewTask() {
               setId(res.data.id)
               // setLoading(false)
               try {
-                const contract = await getSignedContract();
+                const {contract} = await getSignedContract();
                 setTxModalVisible(true)
                 setTxStatus("Initiated")
                 const tx = await contract?.createAutomation(
