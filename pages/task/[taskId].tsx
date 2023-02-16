@@ -10,6 +10,7 @@ import Settings from "../../components/Settings";
 import Addfund from "../../components/Addfund";
 import Gaslimit from "../../components/Gaslimit";
 import Transactionprogress from "../../components/Transactionprogress";
+import dynamic from "next/dynamic";
 
 function Task() {
   const [optionsvisible, setoptionsvisible] = useState(false);
@@ -98,4 +99,4 @@ function Task() {
   );
 }
 
-export default Task;
+export default dynamic(() => Promise.resolve(Task),{ssr:false});

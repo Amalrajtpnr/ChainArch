@@ -1,8 +1,12 @@
 import React from "react";
 import Image from "next/image";
 import NavBar from "../components/NavBar";
+import { useRouter } from "next/router";
 
-function index() {
+function Home() {
+
+  const router = useRouter()
+
   return (
     <div className="h-[100vh] w-[100vw] bg-[#000000] absolute flex overflow-hidden ">
       <div className=" h-[50px] w-[50px] bg-[#26E5FF] rounded-full absolute -top-28  opacity-40  overflow-hidden left-[95%]  shadow-[0px_0px_790px_350px_rgba(0,0,0,0.3)] shadow-[#B200FF]"></div>
@@ -23,11 +27,11 @@ function index() {
             automation
           </h1>
 
-          <div className="h-[9%] w-[40%] flex items-center justify-around my-3 -mt-1 -ml-3">
-            <button className="h-[65%] w-[40%] rounded-[10px] bg-gradient-to-r from-[#2C004F] to-[#BD06FD] flex justify-center items-center text-white text-sm font-medium">
+          <div className="h-[9%] w-[50%] flex items-center justify-around my-3 -mt-1 -ml-3">
+            <button onClick={() => router.push("/dashboard")} className="h-[65%] w-[40%] rounded-[10px] bg-gradient-to-r from-[#2C004F] to-[#BD06FD] flex justify-center items-center text-white text-sm font-medium">
               Go to Dash
             </button>
-            <div className="h-[38px] w-[110px]  rounded-[10px] bg-gradient-to-r from-[#2C004F] to-[#BD06FD] flex justify-center items-center p-[2px] box-border ">
+            <div className="h-[65%] w-[40%]  rounded-[10px] bg-gradient-to-r from-[#2C004F] to-[#BD06FD] flex justify-center items-center p-[2px] box-border ">
               <button className="h-[100%] w-[100%]  rounded-[8px]  bg-[#000000] flex justify-center items-center text-white text-sm font-medium ">
                 Docs
               </button>
@@ -54,4 +58,4 @@ function index() {
   );
 }
 
-export default index;
+export default Home;
