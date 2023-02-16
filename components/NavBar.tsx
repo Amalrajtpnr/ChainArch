@@ -28,10 +28,10 @@ function NavBar() {
   return (
     <div style={{ top: visible ? '0' : '-200px' }} className="min-h-[125px]  w-[100vw] lg:min-h-[125px]  lg:w-[100vw]  sm:min-h-[30px]   flex flex-row justify-end  items-center fixed -top-1 z-100 bg-transparent backdrop-blur-2xl ">
       <div className="w-[67%] h-[120px] sm:min-h-[30px]  flex flex-row justify-around  items-center">
-        <h1 onClick={()=>router.push("/Dashboard")} className="text-white text-[18px] md:text-[15px] md:font-semibold font-bold font-inter">
+        <h1 onClick={()=>router.push("/dashboard")} className="text-white text-[18px] md:text-[15px] md:font-semibold font-bold font-inter">
           Dashboard
         </h1>
-        <h1 onClick={()=>router.push("/creatingAutomation")} className="text-white text-[18px] md:text-[15px] md:font-semibold   font-bold font-inter hover:text-blue-700 hover:underline">
+        <h1 onClick={()=>router.push("/docs")} className="text-white text-[18px] md:text-[15px] md:font-semibold  font-bold font-inter ">
           Docs{" "}
         </h1>
         <h1 onClick={()=>router.push("/contactUs")} className="text-white text-[18px] md:text-[15px] md:font-semibold   font-bold font-inter">
