@@ -7,6 +7,8 @@ import { getSignedContract } from "../../utils/helper-function"
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { Status } from "../../constants/Types";
+import Transactionprogress from "../../components/Transactionprogress";
 
 function NewTask() {
 
@@ -19,6 +21,10 @@ function NewTask() {
   const [initialAmount, setInitialAmount] = useState({value:"",err:""});
   const [taskName, setTaskName] = useState({value:"",err:""})
   const [isAbiAvailable, setisAbiAvailable] = useState(false)
+  const [txModalVisible, setTxModalVisible] = useState(false)
+  const [txStatus, setTxStatus] = useState<Status>(null)
+  const [id, setId] = useState("")
+  const [autoTaskId, setAutoTaskId] = useState("")
   const inputs = [
     {input:targetAddress,func:setTargetAddress},
     {input:abi,func:setAbi},
@@ -65,30 +71,44 @@ function NewTask() {
         setLoading(true);
         await axios
           .post("http://localhost:5001/api/newtask",{
-            address: targetAddress,
-            abi: abi,
+            address: targetAddress.value,
+            abi: abi.value,
+            taskName:taskName.value,
           })
           .then(async (res) => {
             const executor = process.env.NEXT_PUBLIC_EXECUTOR;
             if (res.data) {
+              setId(res.data.id)
               // setLoading(false)
               try {
                 const contract = await getSignedContract();
+                setTxModalVisible(true)
+                setTxStatus("Initiated")
                 const tx = await contract?.createAutomation(
                   targetAddress.value,
-                  gasLimit,
+                  gasLimit.value,
                   executor,
                   {
                     value: ethers.utils.parseEther(initialAmount.value),
                   }
                 );
+                if(tx.confirmations == 0){
+                  setTxStatus('Processing');
+                }
                 const txReceipt = await tx.wait(1);
                 if (txReceipt) {
+                    setTxStatus('Completed');
+                    const task = await contract.getTaskByAddress(res.data.address)
+                    setAutoTaskId(task.id.toString())
                   setLoading(false);
-                  router.push("/task");
                 }
-              } catch (error) {
+              } catch (error:any) {
                 await axios.delete(`http://localhost:5001/deletetask/${res.data.address}`);
+                if (error.message.toLowerCase().includes('user rejected transaction')) {
+                  setTxStatus('Cancelled');
+                } else {
+                  setTxStatus('Failed');
+                }
                 setLoading(false);
               }
             } else if (res.data.error) {
@@ -255,6 +275,10 @@ function NewTask() {
           </button>
         </div>
       </div>
+      {txModalVisible && <Transactionprogress status={txStatus} onBackButtonPress={() => {
+        setTxModalVisible(false)
+        router.push(`/task/${id}${autoTaskId}`)
+      }}  />}
     </div>
   );
 }

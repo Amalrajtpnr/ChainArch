@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import NavBar from "../../components/NavBar";
 import Image from "next/image";
 import TaskContainer from "../../components/TaskContainer";
+import { useRouter } from "next/router";
 function Dashboard() {
   const [active, setActive] = useState(false);
+  const router = useRouter()
 
   function CheckActive() {
     if (active === true) {
@@ -44,7 +46,7 @@ function Dashboard() {
               Cancelled
             </button>
           </div>
-          <button className="text-white text-[12px]  w-[10%] h-[50px] bg-[#DD4747] rounded-[15px] border  font-bold font-inter">
+          <button onClick={() => router.push("/newtask")} className="text-white text-[12px]  w-[10%] h-[50px] bg-[#DD4747] rounded-[15px] border  font-bold font-inter">
             Create Task
           </button>
         </div>
