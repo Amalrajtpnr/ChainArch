@@ -7,6 +7,9 @@ import { getSignedContract } from "../../utils/helper-function"
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { Status } from "../../constants/Types";
+import Transactionprogress from "../../components/Transactionprogress";
+import { ImSpinner2 } from 'react-icons/im'
 
 function NewTask() {
 
@@ -19,6 +22,10 @@ function NewTask() {
   const [initialAmount, setInitialAmount] = useState({value:"",err:""});
   const [taskName, setTaskName] = useState({value:"",err:""})
   const [isAbiAvailable, setisAbiAvailable] = useState(false)
+  const [txModalVisible, setTxModalVisible] = useState(false)
+  const [txStatus, setTxStatus] = useState<Status>(null)
+  const [id, setId] = useState("")
+  const [autoTaskId, setAutoTaskId] = useState("")
   const inputs = [
     {input:targetAddress,func:setTargetAddress},
     {input:abi,func:setAbi},
@@ -64,31 +71,49 @@ function NewTask() {
       try {
         setLoading(true);
         await axios
-          .post("http://localhost:5001/api/newtask",{
-            address: targetAddress,
-            abi: abi,
+          .post("https://automation-helper-production.up.railway.app/api/newtask",{
+            address: targetAddress.value,
+            abi: abi.value,
+            taskName:taskName.value,
           })
           .then(async (res) => {
             const executor = process.env.NEXT_PUBLIC_EXECUTOR;
             if (res.data) {
-              // setLoading(false)
+              setLoading(false)
               try {
-                const contract = await getSignedContract();
+                const {contract} = await getSignedContract();
+                setTxModalVisible(true)
+                setTxStatus("Initiated")
                 const tx = await contract?.createAutomation(
                   targetAddress.value,
-                  gasLimit,
+                  gasLimit.value,
                   executor,
                   {
                     value: ethers.utils.parseEther(initialAmount.value),
                   }
                 );
+                if(tx.confirmations == 0){
+                  setTxStatus('Processing');
+                }
                 const txReceipt = await tx.wait(1);
                 if (txReceipt) {
-                  setLoading(false);
-                  router.push("/task");
+                    setTxStatus('Completed');
+                    const task = await contract.getTaskByAddress(res.data.address)
+                    setAutoTaskId(task.id.toString())
+                   setTimeout(() => {
+                    router.push(`/task/${res.data._id}${task.id.toString()}`)
+                   }, 2000);
                 }
-              } catch (error) {
-                await axios.delete(`http://localhost:5001/deletetask/${res.data.address}`);
+              } catch (error:any) {
+                // console.log(error.message)
+                setId("")
+                setAutoTaskId("")
+                if (error.message.toLowerCase().includes('user rejected transaction')) {
+                  setTxStatus('Cancelled');
+                } else {
+                  setTxStatus('Failed');
+                }
+                await axios.delete(`https://automation-helper-production.up.railway.app/deletetask?address=${res.data.address}`);
                 setLoading(false);
               }
             } else if (res.data.error) {
@@ -114,6 +139,11 @@ function NewTask() {
         }
       } )
     }
+    setAbi({err:"",value:""})
+    setGasLimit({err:"",value:""})
+    setInitialAmount({err:"",value:""})
+    setTargetAddress({err:"",value:""})
+    setTaskName({err:"",value:""})
   };
 
   return (
@@ -142,6 +172,7 @@ function NewTask() {
               className=" h-[90%] min-h-[50px] w-[100%] pl-3 box-border bg-[#0E0E0E] flex  text-sm text-white rounded-xl focus:outline-none"
               type="text"
               placeholder="address"
+              value={targetAddress.value}
               onChange={(e) => {
                 setTargetAddress({err:"",value:e.target.value})
                 if(ethers.utils.isAddress(e.target.value)!== true && e.target.value!==""){
@@ -153,7 +184,7 @@ function NewTask() {
                 }
               }}
             />
-            <span className="text-red-600 font-light text-[12px] ml-2">{targetAddress.err}</span>
+            <span className="text-red-600 font-medium text-[13px] ml-2">{targetAddress.err}</span>
           </div>
 
         {
@@ -165,20 +196,27 @@ function NewTask() {
               className="h-[90%] w-[100%] bg-[#0E0E0E]  flex  text-sm text-white rounded-xl  pl-3 pt-3 box-border focus:outline-none scrollbar-hide"
               name="ABI"
               id=""
-              cols={30}
-              rows={10}
+              cols={50}
+              rows={50}
               placeholder="ABI"
+              value={abi.value}
               onChange={(e) => {
                 setAbi({err:"",value:e.target.value})
                 try {
                   const val =  new ethers.utils.Interface(e.target.value)
                   setAbi({value:e.target.value,err:""})
+                  if(e.target.value.includes("Automatable") && e.target.value.includes("checkAutomationStatus")&&e.target.value.includes("automate")){
+                    setAbi({value:e.target.value,err:""})
+                  }
+                  else {
+                    setAbi({value:e.target.value,err:"contract doesnot follow our guideline. it's not automatable"})
+                  }
                 } catch (error) {
                   setAbi({value:e.target.value,err:"Invalid ABI"})
                 }
               }}
             ></textarea>
-             <span className="text-red-600 font-light text-[12px] ml-2">{abi.err}</span>
+             <span className="text-red-600 font-medium text-[13px] ml-2">{abi.err}</span>
           </div>
           ) 
         }
@@ -190,6 +228,7 @@ function NewTask() {
                 className=" h-[90%] min-h-[50px] w-[100%] pl-3 box-border bg-[#0E0E0E] flex  text-sm text-white rounded-xl focus:outline-none"
                 type="text"
                 placeholder="Name"
+                value={taskName.value}
                 onChange={(e) =>{
                   setTaskName({err:"",value:e.target.value})
                   if(e.target.value === ""){
@@ -200,7 +239,7 @@ function NewTask() {
                   }
                 } }
               />
-              <span className="text-red-600 font-light text-[12px] ml-2">{taskName.err}</span>
+              <span className="text-red-600 font-medium text-[13px] ml-2">{taskName.err}</span>
             </div>
 
             <div className="h-[75px] w-[46%] flex items-start justify-between flex-col relative  ">
@@ -211,6 +250,7 @@ function NewTask() {
                 className=" h-[90%] min-h-[50px] w-[100%] pl-3 box-border bg-[#0E0E0E] flex  text-sm text-white rounded-xl focus:outline-none"
                 type="text"
                 placeholder="0.000"
+                value={initialAmount.value}
                 onChange={(e) => {
                   const regex = /^[+-]?\d+(\.\d+)?$/
                   setInitialAmount({err:"",value:e.target.value})
@@ -227,7 +267,7 @@ function NewTask() {
                   }
                 }}
               />
-              <span className="text-red-600 font-light text-[12px] ml-2">{initialAmount.err}</span>
+              <span className="text-red-600 font-medium text-[13px] ml-2">{initialAmount.err}</span>
             </div>
           </div>
 
@@ -237,6 +277,7 @@ function NewTask() {
               className=" h-[90%] min-h-[50px] w-[100%] pl-3 box-border bg-[#0E0E0E] flex text-sm text-white rounded-xl focus:outline-none"
               type="text"
               placeholder="0000000"
+              value={gasLimit.value}
               onChange={(e) => {
                 setGasLimit({err:"",value:e.target.value})
                 if(Number.isNaN(parseFloat(e.target.value))|| parseFloat(e.target.value) <= 0){
@@ -247,14 +288,16 @@ function NewTask() {
                 }
               }}
             />
-            <span className="text-red-600 font-light text-[12px] ml-2">{gasLimit.err}</span>
+            <span className="text-red-600 font-medium text-[13px] ml-2">{gasLimit.err}</span>
           </div>
 
-          <button  onClick={submit} className=" h-[7%] w-[25%]  bg-gradient-to-r from-[#592D7C] to-[#260441] border-2 border-[#bb9bd6] rounded-[15px] ml-72 text-white text-sm font-semibold flex justify-center items-center">
-            Create
+          <button  onClick={submit} disabled={loading?true:false} className=" h-[7%] w-[25%]  bg-gradient-to-r from-[#592D7C] to-[#260441] rounded-[15px] ml-72 text-white text-sm font-semibold  flex items-center justify-evenly">
+            <span className="">Create</span>
+            {loading && <ImSpinner2 color="white" size={20} />}
           </button>
         </div>
       </div>
+      {txModalVisible && <Transactionprogress status={txStatus} onBackButtonPress={() => setTxModalVisible(false)}  />}
     </div>
   );
 }

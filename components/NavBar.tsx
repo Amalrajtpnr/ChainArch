@@ -45,7 +45,7 @@ function NavBar() {
           style={{
             color: router.pathname === "/dashboard" ? "#b706f5" : "gray",
           }}
-          className="cursor-pointer text-gray-300 hover:text-white text-[18px] md:text-[15px] md:font-semibold font-bold font-inter"
+          className="cursor-pointer lg:hover:text-white hover:text-white text-[18px] md:text-[15px] md:font-semibold font-bold font-inter"
         >
           Dashboard
         </h1>
@@ -56,7 +56,7 @@ function NavBar() {
           style={{
             color: router.pathname === "/docs" ? "#b706f5" : "gray",
           }}
-          className="cursor-pointer text-gray-300 hover:text-white text-[18px] md:text-[15px] md:font-semibold   font-bold font-inter"
+          className="cursor-pointer text-gray-300  text-[18px] md:text-[15px] md:font-semibold  hover:text-white font-bold font-inter"
         >
           Docs{" "}
         </h1>
