@@ -10,8 +10,7 @@ import { useAccount, useContractEvent } from "wagmi";
 import axios from "axios";
 import { ABI } from "../../constants/constants";
 import Lottie from "lottie-react";
-import nodata from "../../public/assets/nodata.json"
-import nodatafound from "../../public/assets/nodatafound.json"
+import nodatafound from  "../../public/assets/nodata.json"
 import Gradient from "../gradient";
 
 
@@ -102,7 +101,7 @@ function Dashboard() {
   function CheckActive() {
     if (active === true) {
       return(
-        <div className={`w-[85%] h-[480px] border-[1px] border-border flex flex-col items-center ${(!address || tasks.filter(item => item.state.toString() === "0").length ===0)?"justify-center":"justify-start"} gap-y-6 rounded-[50px]  py-[5vh] overflow-y-scroll scrollbar-hide`}>
+        <div className={`w-[85%] h-[480px] border-[1px] border-border border-b-0 flex flex-col items-center ${(!address || tasks.filter(item => item.state.toString() === "0").length ===0)?"justify-center":"justify-start"} gap-y-6 rounded-t-[50px]  py-[5vh] overflow-y-scroll scrollbar-hide`}>
        {
         loading?(<div className="w-full h-full flex flex-col items-center justify-start gap-y-6 pt-[1vh]">
           <LoadingTask />
@@ -114,7 +113,7 @@ function Dashboard() {
         )))
        }
        {
-        !address && (<h1 className="text-white">Connect your wallet</h1>)
+        !address && (<h1 className="text-white">Connect your wallet!</h1>)
        }
        {
         (address && tasks.filter(item => item.state.toString() === "0").length === 0 && !loading) && <Lottie className="w-[250px] h-[250px] " animationData={nodatafound} />
@@ -125,7 +124,7 @@ function Dashboard() {
     
     } else {
       return(
-        <div className={`w-[85%] h-[480px] border-[1px] border-border flex flex-col items-center ${(!address || tasks.filter(item => item.state.toString() === "1").length ===0)?"justify-center":"justify-start"} gap-y-6 rounded-[50px] py-[5vh] overflow-y-scroll scrollbar-hide`}>
+        <div className={`w-[85%] h-[480px] border-[1px] border-b-0 border-border flex flex-col items-center ${(!address || tasks.filter(item => item.state.toString() === "1").length ===0)?"justify-center":"justify-start"} gap-y-6 rounded-t-[50px] py-[5vh] overflow-y-scroll scrollbar-hide`}>
             {
         loading?(<div className="w-full h-full flex flex-col items-center justify-start gap-y-6 pt-[1vh]">
           <LoadingTask />
@@ -137,7 +136,7 @@ function Dashboard() {
         )))
        }
        {
-        !address && (<h1 className="text-white">Connect your wallet</h1>)
+        !address && (<h1 className="text-white">Connect your wallet!</h1>)
        }
        {
         (address && tasks.filter(item => item.state.toString() === "1").length === 0 && !loading) && <Lottie className="w-[250px] h-[250px]" animationData={nodatafound} />
@@ -157,14 +156,14 @@ function Dashboard() {
       <div className="w-[90%] h-[100%] flex flex-col items-center justify-start    ">
         <div className="w-[81%] h-[30%]  flex flex-row items-center justify-between  ">
           <div className="w-[25%] h-[40%] bg-[#0A0A0A] flex flex-row items-center justify-center rounded-[20px]   ">
-            <button style={{backgroundColor:active ? "#141414" : "#0A0A0A"}} onClick={()=>{setActive(true)}} className="text-white text-[12px]  w-[45%] h-[70%] rounded-[15px] duration-500  font-bold font-inter">
-              Active Task
+            <button style={{backgroundColor:active ? "#141414" : "#0A0A0A"}} onClick={()=>{setActive(true)}} className="w-[45%] h-[75%] rounded-[15px] duration-500  font-bold font-inter flex items-center justify-center">
+              <h1 className={`${active?"text-transparent bg-clip-text bg-gradient-to-r from-[#2C004F] to-[#BD06FD]":"text-white"} text-[16px] font-extrabold`}>Active</h1>
             </button>
-            <button style={{backgroundColor:active ? "#0A0A0A" : "#141414"}}  onClick={()=>{setActive(false)}} className="text-white text-[12px]  w-[45%] h-[70%]  rounded-[15px] duration-500 ml-[10px] font-bold font-inter">
-              Cancelled
+            <button style={{backgroundColor:active ? "#0A0A0A" : "#141414"}}  onClick={()=>{setActive(false)}} className="w-[45%] h-[75%]  rounded-[15px] duration-500 ml-[10px] font-bold font-inter flex items-center justify-center">
+            <h1 className={`${active === false?"text-transparent bg-clip-text bg-gradient-to-r from-[#2C004F] to-[#BD06FD]":"text-white"} text-[16px] font-extrabold`}>Cancelled</h1>
             </button>
           </div>
-          <button onClick={() => router.push("/newtask")} className="text-white text-[14px]  w-[12%] h-[45px] bg-[#DD4747] rounded-[15px] border  font-bold font-inter">
+          <button onClick={() => router.push("/newtask")} className="text-white text-[14px]  w-[12%] h-[45px] bg-[#DD4747] rounded-[15px]  font-bold font-inter">
             Create Task
           </button>
         </div>

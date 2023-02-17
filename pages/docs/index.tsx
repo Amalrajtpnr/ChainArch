@@ -5,8 +5,9 @@ import { BsClipboardCheck } from "react-icons/bs";
 import Gradient from "../gradient";
 import { CopyBlock, dracula, atomOneDark, Code } from "react-code-blocks";
 import { sample } from "../../constants/constants";
+import dynamic from "next/dynamic";
 
-function CreatingAutomation() {
+function Docs() {
   const [isCopied, setIsCopied] = useState(false);
   const [language, changeLanguage] = useState("typescript");
   const [languageDemo, changeDemo] = useState(sample.typescript);
@@ -65,12 +66,12 @@ function CreatingAutomation() {
   };
 
   return (
-    <div className="h-screen overflow-y-scroll  scrollbar-hide">
-      <div className="h-[110vw] w-full flex flex-col items-center justify-center bg-[#000000]">
+    <div className="h-screen overflow-y-scroll  scrollbar-hide ">
+      <div className="min-h-[110vw] w-full flex flex-col items-center justify-center bg-[#000000] pt-[14vh]">
         <Gradient />
         <NavBar />
 
-        <div className="w-[70%] h-[20%]  flex flex-col items-center justify-center  ">
+        <div className="w-[70%] h-[40vh]  flex flex-col items-center justify-center  ">
           <div className="w-[100%] h-[40%] flex flex-col items-start justify-center ">
             <h1 className="text-white font-inter font-semibold text-[25px]">
               Creating Automated Smart Contracts
@@ -101,7 +102,7 @@ function CreatingAutomation() {
             language={language}
           /> */}
           <pre>
-            <code className="text-white gap-y-2 flex flex-col items-start justify-start">
+            <code className="h-full text-white gap-y-2 flex flex-col items-start justify-start">
               <span className="text-gray-700">
                 &nbsp;&nbsp;// SPDX-License-Identifier: MIT
               </span>
@@ -109,7 +110,7 @@ function CreatingAutomation() {
               &nbsp;&nbsp;pragma solidity ^0.8.7;
               <br />
               <br />
-              &nbsp;&nbsp;import "chainarch/interfaces/automationInterface.sol";
+              &nbsp;&nbsp;import {"'"}chainarch/interfaces/automationInterface.sol{"'"};
               <br />
               <br />
               &nbsp;&nbsp;contract Counter is Automatable&nbsp;{"{"}
@@ -187,7 +188,7 @@ function CreatingAutomation() {
             )}
           </button>
         </div>
-        <div className="w-[70%]  h-[20%] flex flex-col items-start justify-center ">
+        <div className="w-[70%]  h-[60vh] flex flex-col items-start justify-center ">
           <h1 className="text-[20px] font-inter text-white font-semibold">
             Functions
           </h1>
@@ -208,7 +209,7 @@ function CreatingAutomation() {
                 Contains the logic that should be executed on-chain when
                 automationStatus is true.
               </h1>
-              <h1 className="text-[13px] bg-[#131313] rounded-[5px] w-[200px] h-[35px] flex items-center justify-center font-inter font-normal text-white  ml-[40px]">
+              <h1 className="text-[13px] bg-[#131313] rounded-[5px] w-[230px] h-[40px] flex items-center justify-center font-inter font-normal text-white  ml-[40px]">
                 automate
               </h1>{" "}
             </div>
@@ -220,7 +221,7 @@ function CreatingAutomation() {
                 Runs off-chain at every block to determine if the automate
                 function should be called on-chain.
               </h1>
-              <h1 className="text-[13px] bg-[#131313] rounded-[5px] w-[200px] h-[35px] flex items-center justify-center font-inter font-normal text-white  ml-[40px]">
+              <h1 className="text-[13px] bg-[#131313] rounded-[5px] w-[230px] h-[40px] flex items-center justify-center font-inter font-normal text-white  ml-[40px]">
                 checkAutomationStatus
               </h1>{" "}
             </div>
@@ -231,4 +232,4 @@ function CreatingAutomation() {
   );
 }
 
-export default CreatingAutomation;
+export default dynamic(() => Promise.resolve(Docs),{ssr:false});

@@ -55,7 +55,7 @@ function Transactionprogress({ onBackButtonPress,status }: props) {
   }
 
   return (
-    <div className=" h-[100vh] w-[100vw] flex items-center justify-center  backdrop-blur-[50px] bg-[#000000db] fixed top-0 z-[1000]">
+    <div className=" h-[100vh] w-[100vw] flex items-center justify-center  backdrop-blur-[50px] bg-transparent fixed top-0 z-[1000]">
       <div className="h-[150px] w-[600px] bg-[#0E0E0E] border-[1px] border-[#ffffff41] rounded-xl flex flex-col items-center justify-evenly relative">
        {
         (status === "Completed"||

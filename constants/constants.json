@@ -253,6 +253,11 @@
             "internalType": "uint256",
             "name": "_gasLimit",
             "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "executor",
+            "type": "address"
           }
         ],
         "name": "createAutomation",
