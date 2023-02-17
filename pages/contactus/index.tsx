@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import NavBar from "../../components/NavBar";
 import Image from "next/image";
 import { FiMail } from "react-icons/fi";
@@ -6,12 +6,15 @@ import Gradient from "../gradient";
 import emailjs from "@emailjs/browser";
 import Lottie from "lottie-react";
 import message from "../../public/rocket.json";
+import styles from "../../styles/Home.module.css";
+import { ImSpinner2 } from "react-icons/im";
 
 function ContactUs() {
+  const [loading, setLoading] = useState(false);
   const form = useRef<any>();
-
   const sendEmail = (e: any) => {
     e.preventDefault();
+    setLoading(true);
 
     emailjs
       .sendForm(
@@ -22,19 +25,24 @@ function ContactUs() {
       )
       .then(
         (result) => {
-          console.log(result.text);
+          // console.log(result.text);
+          setLoading(false);
+          form.current.value = "";
         },
         (error) => {
-          console.log(error.text);
+          console.clear();
         }
       );
   };
 
   return (
-    <div className="h-screen bg-[#000000]  overflow-y-scroll scrollbar-hide">
+    <div
+      className={`${styles.scroll} h-screen bg-[#000000]  overflow-y-scroll`}
+    >
+      <NavBar />
+
       <div className="h-full w-full  flex flex-row justify-center  items-end  bg-[#000000]">
         <Gradient />
-        <NavBar />
         <div className=" w-[100%] h-[100%]    flex flex-row justify-center  items-end  ">
           <form
             ref={form}
@@ -55,7 +63,7 @@ function ContactUs() {
             <input
               className="w-[90%] h-[70px] rounded-[20px] mt-[10px] bg-[#0E0E0E] focus:outline-none box-border pl-3 mb-3  text-white"
               type="text"
-              name="user_name"
+              name="user_email"
             />
             <h1 className="text-white text-[16px]  font-semibold mt-[10px] font-inter">
               Tell us what you are looking for
@@ -66,13 +74,23 @@ function ContactUs() {
               id=""
               cols={30}
               rows={10}
+              style={{
+                resize: "none",
+              }}
             ></textarea>
             <button
               type="submit"
               onClick={sendEmail}
-              className="text-white text-[18px]  w-[180px] h-[58px] bg-gradient-to-r from-[#592D7C] to-[#260441] rounded-[40px]  mt-[20px] font-bold font-inter"
+              className="text-white text-[18px]  w-[180px] h-[58px] bg-gradient-to-r from-[#592D7C] to-[#260441] rounded-[40px]  mt-[20px] font-bold font-inter flex items-center justify-evenly"
             >
-              Send
+              <span className="">Send</span>
+              {loading && (
+                <ImSpinner2
+                  className="animate-rotate"
+                  color="white"
+                  size={20}
+                />
+              )}
             </button>
           </form>
           <div className="w-[40%] h-[70%] lg:w-[40%] lg:h-[70%]   flex flex-col justify-center  items-start pl-[50px] mb-[50px]">
@@ -80,7 +98,7 @@ function ContactUs() {
               Talk to us
             </h1>
             <Lottie
-              className="h-[130px] w-[130px] m-8"
+              className="h-[180px] w-[180px] my-16"
               animationData={message}
             />
             <h1 className="text-white text-[17px] w-[70%] font-normal font-inter ">
@@ -99,12 +117,10 @@ function ContactUs() {
           </div>
 
           <div className="w-[100%] h-[75%]  flex flex-row justify-center  items-center   ">
-            <div className="w-[17%] h-[68%] flex flex-col justify-start items-center bg-[#0E0E0E]  pt-[20px] pl-[20px] pr-[20px] rounded-[20px] ">
-              <Image
-                width={250}
-                height={400}
+            <div className="w-[17%] h-[68%] flex flex-col justify-start items-center bg-[#0E0E0E]  p-[17px] rounded-[20px] ">
+              <img
+                className="w-full h-[78%] rounded-[8px]"
                 src={"/assets/pranav.jpeg"}
-                className=" rounded-[20px] h-[200px] "
                 alt=""
               />
               <div className="w-[96%] h-[10%] flex flex-row justify-between   items-center mt-1">
@@ -118,33 +134,43 @@ function ContactUs() {
                 </h1>
               </div>
               <div className="w-[95%] h-[10%]  flex items-center justify-start">
-                <Image
-                  height={20}
-                  width={20}
-                  src={"/assets/gmail 2.svg"}
-                  alt=""
-                />
-                <Image
-                  height={20}
-                  width={20}
-                  src={"/assets/github 2.svg"}
-                  alt=""
-                  className="m-2"
-                />
-                <Image
-                  height={20}
-                  width={20}
-                  src={"/assets/telegram 2.svg"}
-                  alt=""
-                />
+                <a
+                  target={"_blank"}
+                  href="mailto: pranavpadmanabhan77@gmail.com"
+                >
+                  <Image
+                    height={20}
+                    width={20}
+                    src={"/assets/gmail 2.svg"}
+                    alt=""
+                  />
+                </a>
+                <a
+                  target={"_blank"}
+                  href="https://github.com/PranavPadmanabhan"
+                >
+                  <Image
+                    height={20}
+                    width={20}
+                    src={"/assets/github 2.svg"}
+                    alt=""
+                    className="m-2"
+                  />
+                </a>
+                <a target={"_blank"} href="https://t.me/PranavPadmanabhan">
+                  <Image
+                    height={20}
+                    width={20}
+                    src={"/assets/telegram 2.svg"}
+                    alt=""
+                  />
+                </a>
               </div>
             </div>{" "}
-            <div className="w-[17%] h-[68%] flex flex-col justify-start items-center bg-[#0E0E0E] ml-[30px] rounded-[20px]  pt-[20px] pl-[20px] pr-[20px] ">
-              <Image
-                width={225}
-                height={40}
+            <div className="w-[17%] h-[68%] flex flex-col justify-start items-center bg-[#0E0E0E] ml-[30px] rounded-[20px] p-[17px] ">
+              <img
+                className="w-full h-[78%] rounded-[8px]"
                 src={"/assets/rahul.jpg"}
-                className=" rounded-[20px] "
                 alt=""
               />
               <div className="w-[96%] h-[10%] flex flex-row justify-between  items-center mt-1">
@@ -158,33 +184,37 @@ function ContactUs() {
                 </h1>
               </div>
               <div className="w-[95%] h-[10%]  flex items-center justify-start">
-                <Image
-                  height={20}
-                  width={20}
-                  src={"/assets/gmail 2.svg"}
-                  alt=""
-                />
-                <Image
-                  height={20}
-                  width={20}
-                  src={"/assets/github 2.svg"}
-                  alt=""
-                  className="m-2"
-                />
-                <Image
-                  height={20}
-                  width={20}
-                  src={"/assets/telegram 2.svg"}
-                  alt=""
-                />
+                <a target={"_blank"} href="mailto: rahulmohanav35@gmail.com">
+                  <Image
+                    height={20}
+                    width={20}
+                    src={"/assets/gmail 2.svg"}
+                    alt=""
+                  />
+                </a>
+                <a target={"_blank"} href="https://github.com/rahulav35">
+                  <Image
+                    height={20}
+                    width={20}
+                    src={"/assets/github 2.svg"}
+                    alt=""
+                    className="m-2"
+                  />
+                </a>
+                <a target={"_blank"} href="https://t.me/ravzyy">
+                  <Image
+                    height={20}
+                    width={20}
+                    src={"/assets/telegram 2.svg"}
+                    alt=""
+                  />
+                </a>
               </div>
             </div>{" "}
-            <div className="w-[17%] h-[68%] flex flex-col justify-start  items-center bg-[#0E0E0E]  ml-[30px] rounded-[20px]  pt-[20px] pl-[20px] pr-[20px] ">
-              <Image
-                width={225}
-                height={400}
+            <div className="w-[17%] h-[68%] flex flex-col justify-start  items-center bg-[#0E0E0E]  ml-[30px] rounded-[20px] p-[17px] ">
+              <img
+                className="w-full h-[78%] rounded-[8px]"
                 src={"/assets/amal.jpg"}
-                className=" rounded-[20px] "
                 alt=""
               />
               <div className="w-[96%] h-[10%] flex flex-row justify-between  items-center mt-1">
@@ -198,33 +228,37 @@ function ContactUs() {
                 </h1>
               </div>
               <div className="w-[95%] h-[10%]  flex items-center justify-start">
-                <Image
-                  height={20}
-                  width={20}
-                  src={"/assets/gmail 2.svg"}
-                  alt=""
-                />
-                <Image
-                  height={20}
-                  width={20}
-                  src={"/assets/github 2.svg"}
-                  alt=""
-                  className="m-2"
-                />
-                <Image
-                  height={20}
-                  width={20}
-                  src={"/assets/telegram 2.svg"}
-                  alt=""
-                />
+                <a target={"_blank"} href="mailto: amalrajtpnr@gmail.com">
+                  <Image
+                    height={20}
+                    width={20}
+                    src={"/assets/gmail 2.svg"}
+                    alt=""
+                  />
+                </a>
+                <a target={"_blank"} href="https://github.com/amalrajtpnr">
+                  <Image
+                    height={20}
+                    width={20}
+                    src={"/assets/github 2.svg"}
+                    alt=""
+                    className="m-2"
+                  />
+                </a>
+                <a target={"_blank"} href="https://t.me/amalrajpnr">
+                  <Image
+                    height={20}
+                    width={20}
+                    src={"/assets/telegram 2.svg"}
+                    alt=""
+                  />
+                </a>
               </div>
             </div>
-            <div className="w-[17%] h-[68%] flex flex-col justify-start items-center bg-[#0E0E0E]  ml-[30px] rounded-[20px]  pt-[20px] pl-[20px] pr-[20px] ">
-              <Image
-                width={225}
-                height={400}
+            <div className="w-[17%] h-[68%] flex flex-col justify-start items-center bg-[#0E0E0E]  ml-[30px] rounded-[20px] p-[17px] ">
+              <img
                 src={"/assets/athul.jpg"}
-                className=" rounded-[20px] "
+                className="w-full h-[78%] rounded-[8px]"
                 alt=""
               />
               <div className="w-[96%] h-[10%] flex flex-row justify-between  items-center mt-1 ">
@@ -238,25 +272,31 @@ function ContactUs() {
                 </h1>
               </div>
               <div className="w-[95%] h-[10%]  flex items-center justify-start">
-                <Image
-                  height={20}
-                  width={20}
-                  src={"/assets/gmail 2.svg"}
-                  alt=""
-                />
-                <Image
-                  height={20}
-                  width={20}
-                  src={"/assets/behance 1.svg"}
-                  alt=""
-                  className="m-2"
-                />
-                <Image
-                  height={20}
-                  width={20}
-                  src={"/assets/telegram 2.svg"}
-                  alt=""
-                />
+                <a target={"_blank"} href="mailto: ivichu20@gmail.com">
+                  <Image
+                    height={20}
+                    width={20}
+                    src={"/assets/gmail 2.svg"}
+                    alt=""
+                  />
+                </a>
+                <a target={"_blank"} href="behance.net">
+                  <Image
+                    height={20}
+                    width={20}
+                    src={"/assets/behance 1.svg"}
+                    alt=""
+                    className="m-2"
+                  />
+                </a>
+                <a target={"_blank"} href="https://t.me/vichu20">
+                  <Image
+                    height={20}
+                    width={20}
+                    src={"/assets/telegram 2.svg"}
+                    alt=""
+                  />
+                </a>
               </div>
             </div>
           </div>

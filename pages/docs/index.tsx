@@ -1,19 +1,67 @@
 import React, { useState } from "react";
 import NavBar from "../../components/NavBar";
 import { DocumentCopy } from "iconsax-react";
+import { BsClipboardCheck } from "react-icons/bs";
 import Gradient from "../gradient";
+import { CopyBlock, dracula, atomOneDark, Code } from "react-code-blocks";
+import { sample } from "../../constants/constants";
 
 function CreatingAutomation() {
   const [isCopied, setIsCopied] = useState(false);
+  const [language, changeLanguage] = useState("typescript");
+  const [languageDemo, changeDemo] = useState(sample.typescript);
+  const [lineNumbers, toggleLineNumbers] = useState(true);
 
   interface CopyButtonProps {
     text: string;
   }
 
-  function CopyButton({ text }: CopyButtonProps) {}
   const handleCopyClick = () => {
-    navigator.clipboard.writeText("");
-    setIsCopied(true);
+    navigator.clipboard
+      .writeText(
+        `
+    // SPDX-License-Identifier: MIT
+
+    pragma solidity ^0.8.7;
+
+    import "chainarch/interfaces/automationInterface.sol";
+    
+    
+    contract Counter is Automatable{
+    
+        uint public count;
+        uint s_lastTimeStamp;
+        uint public immutable i_interval;
+    
+        constructor(){
+            s_lastTimeStamp = block.timestamp;
+            i_interval = 300;
+        }
+    
+        function increment() public {
+            count++;
+        }
+    
+        function decrement() public {
+            count++;
+        }
+    
+        function checkAutomationStatus() external view override returns(bool){
+            bool automationStatus = (block.timestamp - s_lastTimeStamp)> i_interval;
+            return automationStatus;
+        }
+    
+        function automate() external override {
+            increment();
+            s_lastTimeStamp = block.timestamp;
+       }
+    
+    }`
+      )
+      .then(() => setIsCopied(true));
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 3000);
   };
 
   return (
@@ -37,72 +85,106 @@ function CreatingAutomation() {
             </h1>
           </div>
         </div>
-        <div className="w-[70%] bg-[#0E0E0E] h-[45%]  rounded-[20px] border-2 border-[#232222] flex flex-row items-start justify-between p-[20px] pl-[50px]">
+        <div className="w-[70%] bg-[#0E0E0E] min-h-[45vh]  rounded-[20px] border-2 border-[#232222] flex flex-row items-start justify-between p-[20px] pl-[50px]">
+          {/* <CopyBlock
+            className="w-[100%]"
+            language={language}
+            text={languageDemo}
+            showLineNumbers={lineNumbers}
+            theme={atomOneDark}
+            wrapLines={true}
+            // codeBlock
+          /> */}
+          {/* <Code
+            style={{ backgroundColor: "transparent" }}
+            text={languageDemo}
+            language={language}
+          /> */}
           <pre>
-            <code className="text-white">
-              // SPDX-License-Identifier: MIT
+            <code className="text-white gap-y-2 flex flex-col items-start justify-start">
+              <span className="text-gray-700">
+                &nbsp;&nbsp;// SPDX-License-Identifier: MIT
+              </span>
               <br />
-              pragma solidity ^0.8.7;
+              &nbsp;&nbsp;pragma solidity ^0.8.7;
               <br />
-              import "chainarch/interfaces/automationInterface.sol";
               <br />
-              contract Counter is Automatable{"{"}
+              &nbsp;&nbsp;import "chainarch/interfaces/automationInterface.sol";
               <br />
-              uint public count; <br />
-             
-              uint s_lastTimeStamp;
               <br />
-              uint public immutable i_interval;
+              &nbsp;&nbsp;contract Counter is Automatable&nbsp;{"{"}
               <br />
-              constructor(){"{"}
               <br />
-              s_lastTimeStamp = block.timestamp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint public count;{" "}
               <br />
-              i_interval = 300;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint s_lastTimeStamp;
               <br />
-            {"}"}
-              <br />
-              function increment() public {"{"}
-              <br />
-              count++;
-              <br />
-              {"}"}
-              <br />
-              function decrement() public {"{"}
-              <br />
-              count++;
-              <br />
-              {"}"}
-              <br />
-              function checkAutomationStatus() external view override
-              returns(bool){"{"}
-              <br />
-              bool automationStatus = (block.timestamp - s_lastTimeStamp){
-                ">"
-              }{" "}
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint public immutable
               i_interval;
               <br />
-              return automationStatus;
               <br />
-              {"}"} <br />
-              function automate() external override {"{"}
               <br />
-              increment();
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor()&nbsp;{"{"}
               <br />
-              s_lastTimeStamp = block.timestamp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_lastTimeStamp
+              = block.timestamp;
               <br />
-              {"}"}
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_interval
+              = 300;
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"}"}
+              <br />
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;function increment()
+              public {"{"}
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count++;
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"}"}
+              <br />
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;function decrement()
+              public {"{"}
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count++;
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"}"}
+              <br />
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;function
+              checkAutomationStatus() external view override returns(bool){"{"}
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool
+              automationStatus = (block.timestamp - s_lastTimeStamp){">"}{" "}
+              i_interval;
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return
+              automationStatus;
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"}"} <br />
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;function automate()
+              external override {"{"}
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;increment();
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_lastTimeStamp
+              = block.timestamp;
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"}"}
               <br />
               {"}"}
             </code>
           </pre>
           <button
-            onClick={() => {
-              handleCopyClick;
-            }}
+            onClick={handleCopyClick}
             className="w-[60px] h-[40px] rounded-[10px] flex flex-col justify-center items-center bg-[#212121]"
           >
-            <DocumentCopy size="20" color="white" />
+            {isCopied ? (
+              <BsClipboardCheck size="20" color="white" />
+            ) : (
+              <DocumentCopy size="20" color="white" />
+            )}
           </button>
         </div>
         <div className="w-[70%]  h-[20%] flex flex-col items-start justify-center ">
@@ -110,28 +192,37 @@ function CreatingAutomation() {
             Functions
           </h1>
           <div className="w-[100%] h-[60%] rounded-[20px] border-2 border-[#232222] flex flex-col justify-center items-center p-[20px] mt-[25px]">
-            <div className="w-[100%] h-[40%] rounded-[20px] bg-[#131313] flex flex-row justify-start items-center">
+            <div className="w-[100%] h-[40%] rounded-[15px] min-h-[50px] bg-[#131313] flex flex-row justify-start items-center">
               <h1 className="text-[15px] font-inter text-white  font-semibold ml-[40px]">
                 Functions
               </h1>
-              <h1 className="text-[15px] font-inter text-white font-bold ml-[40px]">
+              <h1 className="text-[15px] font-inter text-white font-bold ml-[140px]">
                 Descriptions
               </h1>
             </div>
+            <div className="w-[100%] h-[70%] rounded-[20px]  flex flex-row justify-start items-center gap-y-3">
+              <h1 className="text-[15px] font-inter font-normal text-white  ml-[40px]">
+                automate
+              </h1>
+              <h1 className="text-[15px] font-inter font-normal text-white  ml-[140px] mr-11">
+                Contains the logic that should be executed on-chain when
+                automationStatus is true.
+              </h1>
+              <h1 className="text-[13px] bg-[#131313] rounded-[5px] w-[200px] h-[35px] flex items-center justify-center font-inter font-normal text-white  ml-[40px]">
+                automate
+              </h1>{" "}
+            </div>
             <div className="w-[100%] h-[60%] rounded-[20px]  flex flex-row justify-start items-center">
               <h1 className="text-[15px] font-inter font-normal text-white  ml-[40px]">
-                Automate
+                checkAutomationStatus
               </h1>
-              <h1 className="text-[15px] font-inter font-normal text-white  ml-[40px]">
-                Runs off-chain at every block to determine if the be called
-                on-chain.
+              <h1 className="text-[15px] font-inter font-normal text-white  ml-[40px] ">
+                Runs off-chain at every block to determine if the automate
+                function should be called on-chain.
               </h1>
-              <h1 className="text-[15px] font-inter font-normal text-white  ml-[40px]">
-                Automate
+              <h1 className="text-[13px] bg-[#131313] rounded-[5px] w-[200px] h-[35px] flex items-center justify-center font-inter font-normal text-white  ml-[40px]">
+                checkAutomationStatus
               </h1>{" "}
-              <h1 className="text-[15px] font-inter font-normal text-white  ml-[40px]">
-                function should
-              </h1>
             </div>
           </div>
         </div>
