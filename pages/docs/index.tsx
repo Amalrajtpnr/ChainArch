@@ -192,7 +192,7 @@ function CreatingAutomation() {
             Functions
           </h1>
           <div className="w-[100%] h-[60%] rounded-[20px] border-2 border-[#232222] flex flex-col justify-center items-center p-[20px] mt-[25px]">
-            <div className="w-[100%] h-[40%] rounded-[20px] bg-[#131313] flex flex-row justify-start items-center">
+            <div className="w-[100%] h-[40%] rounded-[15px] min-h-[50px] bg-[#131313] flex flex-row justify-start items-center">
               <h1 className="text-[15px] font-inter text-white  font-semibold ml-[40px]">
                 Functions
               </h1>
@@ -200,35 +200,29 @@ function CreatingAutomation() {
                 Descriptions
               </h1>
             </div>
-            <div className="w-[100%] h-[60%] rounded-[20px]  flex flex-row justify-start items-center">
+            <div className="w-[100%] h-[70%] rounded-[20px]  flex flex-row justify-start items-center gap-y-3">
               <h1 className="text-[15px] font-inter font-normal text-white  ml-[40px]">
-                Automate
+                automate
               </h1>
-              <h1 className="text-[15px] font-inter font-normal text-white  ml-[40px]">
-                Runs off-chain at every block to determine if the be called
-                on-chain.
+              <h1 className="text-[15px] font-inter font-normal text-white  ml-[140px] mr-11">
+                Contains the logic that should be executed on-chain when
+                automationStatus is true.
               </h1>
-              <h1 className="text-[15px] font-inter font-normal text-white  ml-[40px]">
-                Automate
+              <h1 className="text-[13px] bg-[#131313] rounded-[5px] w-[200px] h-[35px] flex items-center justify-center font-inter font-normal text-white  ml-[40px]">
+                automate
               </h1>{" "}
-              <h1 className="text-[15px] font-inter font-normal text-white  ml-[40px]">
-                function should
-              </h1>
             </div>
             <div className="w-[100%] h-[60%] rounded-[20px]  flex flex-row justify-start items-center">
               <h1 className="text-[15px] font-inter font-normal text-white  ml-[40px]">
                 checkAutomationStatus
               </h1>
-              <h1 className="text-[15px] font-inter font-normal text-white  ml-[40px]">
-                Runs off-chain at every block to determine if the be called
-                on-chain.
+              <h1 className="text-[15px] font-inter font-normal text-white  ml-[40px] ">
+                Runs off-chain at every block to determine if the automate
+                function should be called on-chain.
               </h1>
-              <h1 className="text-[15px] font-inter font-normal text-white  ml-[40px]">
-                Automate
+              <h1 className="text-[13px] bg-[#131313] rounded-[5px] w-[200px] h-[35px] flex items-center justify-center font-inter font-normal text-white  ml-[40px]">
+                checkAutomationStatus
               </h1>{" "}
-              <h1 className="text-[15px] font-inter font-normal text-white  ml-[40px]">
-                function should
-              </h1>
             </div>
           </div>
         </div>

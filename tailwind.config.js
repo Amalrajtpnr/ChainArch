@@ -53,10 +53,28 @@ module.exports = {
             backgroundPosition: "500px 0",
           },
         },
+        rotate: {
+          "0%": {
+            transform: "rotate(0deg)",
+          },
+          "25%": {
+            transform: "rotate(90deg)",
+          },
+          "50%": {
+            transform: "rotate(180deg)",
+          },
+          "75%": {
+            transform: "rotate(270deg)",
+          },
+          "100%": {
+            transform: "rotate(360deg)",
+          },
+        },
       },
       animation: {
         flicker: "flicker 3s linear infinite",
         shimmer: "shimmer 1.3s linear infinite",
+        rotate: "rotate 1.3s linear infinite",
       },
     },
   },

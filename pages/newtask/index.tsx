@@ -11,7 +11,7 @@ import { Status } from "../../constants/Types";
 import Transactionprogress from "../../components/Transactionprogress";
 import { ImSpinner2 } from "react-icons/im";
 import Lottie from "lottie-react";
-import blockchain from "../../public/assets/blockchain.json"
+import blockchain from "../../public/assets/blockchain.json";
 
 function NewTask() {
   const router = useRouter();
@@ -166,7 +166,7 @@ function NewTask() {
           <h1 className="text-4xl tracking-wider text-white font-inter font-extrabold mr-[70px] mb-3">
             Create Task
           </h1>
-       <Lottie className="w-[450px] h-[350px]" animationData={blockchain}/> 
+          <Lottie className="w-[450px] h-[350px]" animationData={blockchain} />
           <h1 className="text-white w-[80%] text-start tracking-wider ml-40 my-5">
             Streamlining Daily Tasks with Automation for Increased Efficiency
             and Productivity
@@ -337,7 +337,9 @@ function NewTask() {
             className=" h-[7%] w-[25%]  bg-gradient-to-r from-[#592D7C] to-[#260441] rounded-[15px] ml-72 text-white text-sm font-semibold  flex items-center justify-evenly"
           >
             <span className="">Create</span>
-            {loading && <ImSpinner2 color="white" size={20} />}
+            {loading && (
+              <ImSpinner2 className="animate-rotate" color="white" size={20} />
+            )}
           </button>
         </div>
       </div>

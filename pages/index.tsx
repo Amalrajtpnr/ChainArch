@@ -5,8 +5,7 @@ import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 
 function Home() {
-
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <div className="h-[100vh] w-[100vw] bg-[#000000] absolute flex overflow-hidden ">
@@ -16,12 +15,19 @@ function Home() {
         <NavBar />
         <div className="h-[100%] w-[55%]  flex flex-col items-start justify-center pl-5 box-border ml-[100px] ">
           <div className="h-[56%] w-[66%] flex items-center justify-center  -left-7  relative top-4 ">
-            <Image width={300} height={300} src={"/Group 13.svg"} alt="" />
+            <Image
+              className="animate-pulse"
+              width={300}
+              height={300}
+              src={"/Group 13.svg"}
+              alt=""
+            />
           </div>
 
           <h1 className=" text-[63px] leading-[65px]  tracking-wider w-[100%] font-ice font-medium text-white -mt-[125px] my-3">
             {" "}
-            Efficiency Redefined Through Automation
+            Efficiency Redefined
+            <br /> Through Automation
           </h1>
           <h1 className="text-slg w-[45%]  h-[10%]  font-medium font-inter text-white tracking-wider -mt-1 my-3 ">
             Revolutionizing the way we interact with the web through Web3
@@ -29,7 +35,10 @@ function Home() {
           </h1>
 
           <div className="h-[9%] w-[50%] flex items-center justify-around my-3 -mt-1 -ml-3">
-            <button onClick={() => router.push("/dashboard")} className="h-[65%] w-[40%] rounded-[10px] bg-gradient-to-r from-[#2C004F] to-[#BD06FD] flex justify-center items-center text-white text-sm font-medium">
+            <button
+              onClick={() => router.push("/dashboard")}
+              className="h-[65%] w-[40%] rounded-[10px] bg-gradient-to-r from-[#2C004F] to-[#BD06FD] flex justify-center items-center text-white text-sm font-medium"
+            >
               Go to Dash
             </button>
             <div className="h-[65%] w-[40%]  rounded-[10px] bg-gradient-to-r from-[#2C004F] to-[#BD06FD] flex justify-center items-center p-[2px] box-border ">
@@ -43,10 +52,22 @@ function Home() {
         <div className="h-[100%] w-[35%] ">
           <div className="h-[70%] w-[85%] flex items-start justify-center flex-col  pt-10 box-border border-red-200">
             <div className="h-[30%] w-[70%] flex ml-24   ">
-              <Image width={190} height={190} src={"/Group 3 (1).svg"} alt="" />
+              <Image
+                width={190}
+                height={190}
+                className="mt-10 animate-pulse"
+                src={"/Group 3 (1).svg"}
+                alt=""
+              />
             </div>
             <div className="h-[60%] w-[80%] flex ">
-              <Image width={250} height={250} src={"/Group 4 (1).svg"} alt="" />
+              <Image
+                className="animate-pulse"
+                width={250}
+                height={250}
+                src={"/Group 4 (1).svg"}
+                alt=""
+              />
             </div>
           </div>
 
@@ -59,5 +80,4 @@ function Home() {
   );
 }
 
-export default dynamic(() => Promise.resolve(Home),{ssr:false});
-
+export default dynamic(() => Promise.resolve(Home), { ssr: false });
