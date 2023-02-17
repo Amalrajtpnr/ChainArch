@@ -18,7 +18,7 @@ import Gradient from "../gradient";
 
 function Dashboard() {
   const [active, setActive] = useState(true);
-  const { address } = useAccount()
+  const { address,isConnected } = useAccount()
   const router = useRouter();
   const [tasks, setTasks] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
@@ -43,60 +43,20 @@ function Dashboard() {
   }
 
 
-  useContractEvent({
-    address: `0x${contractAddress}`,
-    abi: ABI,
-    eventName: "AutoTaskCancelled",
-    listener: async () => {
-      getTasks()
-    },
-  });
+  const listenToTaskUpdate = async() => {
+    const { contract } = await getSignedContract()
+    contract.on("TaskDetailsUpdated",async() => {
+      getTasks();
+    })
+  }
 
-  useContractEvent({
-    address: `0x${contractAddress}`,
-    abi: ABI,
-    eventName: "NewAutoTask",
-    listener: async () => {
-      getTasks()
-    },
-  });
-
-  useContractEvent({
-    address: `0x${contractAddress}`,
-    abi: ABI,
-    eventName: "TaskFundingSuccess",
-    listener: async () => {
-      getTasks()
-    },
-  });
-  
-
-  useContractEvent({
-    address: `0x${contractAddress}`,
-    abi: ABI,
-    eventName: "TaskFundWithdrawSuccess",
-    listener: async () => {
-      getTasks()
-    },
-  });
-  
-
-
-
-  useContractEvent({
-    address: `0x${contractAddress}`,
-    abi: ABI,
-    eventName: "TaskDetailsUpdated",
-    listener: async () => {
-      getTasks()
-    },
-  });
 
   useEffect(() => {
-    if(address){
+    if(address&& isConnected ){
       getTasks()
+      listenToTaskUpdate()
     }
-  },[address])
+  },[address,isConnected])
 
   function CheckActive() {
     if (active === true) {

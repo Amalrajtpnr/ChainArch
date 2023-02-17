@@ -110,7 +110,7 @@ function NewTask() {
                   setAutoTaskId(task.id.toString());
                   setTimeout(() => {
                     router.push(`/task/${res.data._id}${task.id.toString()}`);
-                  }, 2000);
+                  }, 1000);
                 }
               } catch (error: any) {
                 console.log(error.message)

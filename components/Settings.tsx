@@ -6,7 +6,7 @@ function Settings({ onClick }: props) {
   return (
     <div
       onClick={onClick}
-      className="cursor-pointer h-[36px] w-[36px] bg-[#111111] items-center justify-center flex-col flex rounded-md mr-32"
+      className="cursor-pointer h-[36px] w-[36px] bg-[#111111] items-center justify-center flex-col flex rounded-md "
     >
       <div className="h-[20px] w-[20px] items-center justify-center  flex rounded-md">
         <Settingsicon />
