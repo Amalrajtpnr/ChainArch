@@ -8,9 +8,10 @@ type TaskContainerProps = {
   active: boolean;
   owner:string;
   balance:string
+  onClick:() => void;
 };
 
-function TaskContainer({ name, active,balance,owner }: TaskContainerProps) {
+function TaskContainer({ name, active,balance,owner,onClick }: TaskContainerProps) {
   const textColor = active ? "green" : "red";
 
   const style = {
@@ -18,7 +19,7 @@ function TaskContainer({ name, active,balance,owner }: TaskContainerProps) {
   };
 
   return (
-    <div className="w-[90%] h-[110px]  rounded-[20px] flex flex-row items-center justify-between bg-gradient-to-r from-[#2c2828be] to-[#0b0101]">
+    <div onClick={onClick} className="cursor-pointer w-[93%] min-h-[110px] rounded-[20px] flex flex-row items-center justify-between bg-gradient-to-r from-[#2c2828be] to-[#0b0101]">
       <div className="w-[100%] h-[50%] flex flex-row items-center justify-end">
         <div className="w-[15%] h-[50%] flex flex-col justify-around items-start ">
           <h1 className="text-[16px] text-white font-inter font-semibold">
@@ -47,7 +48,7 @@ function TaskContainer({ name, active,balance,owner }: TaskContainerProps) {
           Balance
         </h1>
         <h1 className="text-[12px] text-white font-inter font-extralight">
-          {balance?ethers.utils.formatEther(balance):"0.000"} ETH
+          {balance?ethers.utils.formatEther(balance).toString().slice(0,10):"0.000"} ETH
         </h1>
       </div>
     </div>
@@ -55,3 +56,13 @@ function TaskContainer({ name, active,balance,owner }: TaskContainerProps) {
 }
 
 export default TaskContainer;
+
+
+
+export function LoadingTask() {
+  return (
+    <div className="w-[93%] min-h-[110px] animate-pulse opacity-[0.2]  rounded-[20px] flex flex-row items-center justify-between bg-gradient-to-tr from-[#3d3d3def] via-[#797979ef] to-[#3d3d3def]">
+   
+  </div>
+  )
+}

@@ -4863,6 +4863,18 @@ loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
+lottie-react@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.npmjs.org/lottie-react/-/lottie-react-2.3.1.tgz"
+  integrity sha512-8cxd6XZZtECT6LoAhCftRdYrEpHxiouvB5EPiYA+TtCG5LHNYAdMS9IVIHcxKtWnpo7x16QfCLj1XLXZpaN81A==
+  dependencies:
+    lottie-web "^5.9.4"
+
+lottie-web@^5.9.4:
+  version "5.10.2"
+  resolved "https://registry.npmjs.org/lottie-web/-/lottie-web-5.10.2.tgz"
+  integrity sha512-d0PFIGiwuMsJYaF4uPo+qG8dEorlI+xFI2zrrFtE1bGO4WoLIz+NjremxEq1swpR7juR10aeOtmNh3d6G3ub0A==
+
 loupe@^2.3.1:
   version "2.3.6"
   resolved "https://registry.npmjs.org/loupe/-/loupe-2.3.6.tgz"

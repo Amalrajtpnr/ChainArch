@@ -26,7 +26,7 @@ import WithdrawModal from "../../components/FundWithDrawModal";
 
 type props = {
   id: string | number;
-  autoTaskId: string | number;
+  autoTaskId: any;
 };
 
 function Task({ id,autoTaskId }: props) {
@@ -39,8 +39,6 @@ function Task({ id,autoTaskId }: props) {
   const [txStatus, setTxStatus] = useState<Status>(null)
   const [amount, setAmount] = useState("")
   const {address} = useAccount()
-
-  // console.log(id.toString())
 
   const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
   useContractEvent({
@@ -57,7 +55,7 @@ function Task({ id,autoTaskId }: props) {
     abi: ABI,
     eventName: "GasLimitUpdated",
     listener: async () => {
-      getTaskFromDB();
+      getTaskFromBackend();
     },
   });
 
@@ -66,7 +64,7 @@ function Task({ id,autoTaskId }: props) {
     abi: ABI,
     eventName: "TaskFundWithdrawSuccess",
     listener: async () => {
-      getTaskFromDB();
+      getTaskFromBackend();
     },
   });
 
@@ -75,7 +73,7 @@ function Task({ id,autoTaskId }: props) {
     abi: ABI,
     eventName: "AutoTaskCancelled",
     listener: async () => {
-      getTaskFromDB();
+      getTaskFromBackend();
     },
   });
 
@@ -84,7 +82,7 @@ function Task({ id,autoTaskId }: props) {
     abi: ABI,
     eventName: "TaskFundingSuccess",
     listener: async () => {
-      getTaskFromDB();
+      getTaskFromBackend();
     },
   });
 
@@ -92,7 +90,7 @@ function Task({ id,autoTaskId }: props) {
 
   const getTaskFromDB = async () => {
     await axios
-      .get(`http://localhost:5001/api/task?id=${id.valueOf()}`)
+      .get(`https://automation-helper-production.up.railway.app/api/task?id=${id.valueOf()}`)
       .then(async (res) => {
         setExecutions(res.data.executions);
         // console.log(res.data.address);
@@ -104,6 +102,14 @@ function Task({ id,autoTaskId }: props) {
      
   };
 
+  const getTaskFromBackend = async () => {
+
+        const {contract} = await getSignedContract();
+        const task = await contract.getTaskById(parseInt(autoTaskId.toString()))
+        setTaskFromBC(task)
+     
+  };
+
   const addFunds = async() => {
     try {
       setOptionsVisible(false)
@@ -112,7 +118,7 @@ function Task({ id,autoTaskId }: props) {
       const {contract} = await getSignedContract();
       setTxModalVisible(true)
       setTxStatus("Initiated")
-      const tx = await contract.addFunds(1,executor,{value:ethers.utils.parseEther(amount) ,gasLimit:100000})
+      const tx = await contract.addFunds(parseInt(autoTaskId.toString()),executor,{value:ethers.utils.parseEther(amount) ,gasLimit:100000})
       if(tx.confirmations == 0){
         setTxStatus('Processing');
       }
@@ -163,6 +169,7 @@ function Task({ id,autoTaskId }: props) {
       const {contract} = await getSignedContract();
       setTxModalVisible(true)
       setTxStatus("Initiated")
+      console.log(parseInt(autoTaskId.toString()))
       const tx = await contract.withdrawFunds(parseInt(autoTaskId.toString()),{gasLimit:100000})
       if(tx.confirmations == 0){
         setTxStatus('Processing');
@@ -173,6 +180,7 @@ function Task({ id,autoTaskId }: props) {
         setTxStatus('Completed');
       }
     } catch (error:any) {
+      console.log(error)
       if (error.message.toLowerCase().includes('user rejected transaction')) {
         setTxStatus('Cancelled');
       } else {
@@ -338,7 +346,8 @@ export default dynamic(() => Promise.resolve(Task), { ssr: false });
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { taskId } = context.query;
   const id = taskId?.toString().slice(0, 24);
-  const autoTaskId = taskId?.toString().slice(25, taskId?.toString().length);
+  const autoTaskId = taskId?.toString().slice(24, taskId?.toString().length);
+  console.log(autoTaskId)
   return {
     props: {
       id: id,
