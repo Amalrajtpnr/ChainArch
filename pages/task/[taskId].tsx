@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useEffect, useState } from "react";
 import NavBar from "../../components/NavBar";
@@ -46,53 +47,49 @@ function Task({ id, autoTaskId }: props) {
   const [executions, setExecutions] = useState<any[]>([]);
   const [txStatus, setTxStatus] = useState<Status>(null);
   const [amount, setAmount] = useState("");
-  const { address } = useAccount();
+  const { address,isConnected } = useAccount();
 
   const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
-  useContractEvent({
-    address: `0x${contractAddress}`,
-    abi: ABI,
-    eventName: "TaskDetailsUpdated",
-    listener: async () => {
+
+  const listenToTaskUpdate = async() => {
+    const { contract } = await getSignedContract()
+    contract.on("TaskDetailsUpdated",async() => {
       getTaskFromDB();
-    },
-  });
+    })
+  }
 
-  useContractEvent({
-    address: `0x${contractAddress}`,
-    abi: ABI,
-    eventName: "GasLimitUpdated",
-    listener: async () => {
+  const listenToGasUpdate = async() => {
+    const { contract } = await getSignedContract()
+    contract.on("GasLimitUpdated",async() => {
       getTaskFromBackend();
-    },
-  });
+    })
+  }
 
-  useContractEvent({
-    address: `0x${contractAddress}`,
-    abi: ABI,
-    eventName: "TaskFundWithdrawSuccess",
-    listener: async () => {
-      getTaskFromBackend();
-    },
-  });
 
-  useContractEvent({
-    address: `0x${contractAddress}`,
-    abi: ABI,
-    eventName: "AutoTaskCancelled",
-    listener: async () => {
-      getTaskFromBackend();
-    },
-  });
 
-  useContractEvent({
-    address: `0x${contractAddress}`,
-    abi: ABI,
-    eventName: "TaskFundingSuccess",
-    listener: async () => {
+  const listenToTaskFundWithdraw = async() => {
+    const { contract } = await getSignedContract()
+    contract.on("TaskFundWithdrawSuccess",async() => {
       getTaskFromBackend();
-    },
-  });
+    })
+  }
+
+
+  const listenToTaskCancellation = async() => {
+    const { contract } = await getSignedContract()
+    contract.on("AutoTaskCancelled",async() => {
+      getTaskFromBackend();
+    })
+  }
+
+
+  const listenToTaskFunding = async() => {
+    const { contract } = await getSignedContract()
+    contract.on("TaskFundingSuccess",async() => {
+      getTaskFromBackend();
+    })
+  }
+
 
   const getTaskFromDB = async () => {
     await axios
@@ -149,6 +146,7 @@ function Task({ id, autoTaskId }: props) {
     try {
       setOptionsVisible(false);
       setTaskModalVisible(false);
+      setGasLimitModalVisible(false)
       const { contract } = await getSignedContract();
       setTxModalVisible(true);
       setTxStatus("Initiated");
@@ -232,10 +230,15 @@ function Task({ id, autoTaskId }: props) {
   };
 
   useEffect(() => {
-    if (address) {
+    if (address&& isConnected) {
       getTaskFromDB();
+      listenToGasUpdate()
+      listenToTaskCancellation()
+      listenToTaskFundWithdraw()
+      listenToTaskFunding()
+      listenToTaskUpdate()
     }
-  }, []);
+  }, [address,isConnected]);
 
   return (
     <div className="h-[100vh] w-[100vw] bg-[#000000] absolute flex overflow-hidden">
@@ -272,14 +275,14 @@ function Task({ id, autoTaskId }: props) {
         )}
 
         <div className="h-[80%] w-[40%]  flex items-start justify-center flex-col  mr-36 mt-20  ml-14 pl-10 box-border ">
-          <div className="h-[10%] w-[100%]  flex justify-between items-center -mt-10 relative z-0">
+          <div className="h-[10%] w-[77%]  flex justify-between items-center -mt-10 relative ">
             <h1 className="text-2xl font-bold text-white">
               {taskFromDB.taskName}
             </h1>
             <Settings onClick={() => setOptionsVisible(!optionsVisible)} />
             {optionsVisible &&
-              (taskFromBC?.state.toString() === "0" ? (
-                <div className="min-h-[29px] w-[110px] bg-[#2320207f] rounded-md absolute z-0 left-[245px] top-14 flex flex-col items-center justify-evenly border-[1px] border-[#ffffff40]">
+              (taskFromBC?.state?.toString() === "0" ? (
+                <div className="min-h-[29px] w-[110px] bg-[#2320207f] rounded-md absolute z-0 right-0 top-14 flex flex-col items-center justify-evenly border-[1px] border-[#ffffff40]">
                   <div
                     onClick={() => {
                       setOptionsVisible(false);
@@ -315,7 +318,8 @@ function Task({ id, autoTaskId }: props) {
                   </div>
                 </div>
               ) : (
-                <div className="min-h-[29px] w-[110px] bg-[#2320207f] rounded-md absolute z-0 left-[245px] top-14 flex flex-col items-center justify-evenly border-[1px] border-[#ffffff40]">
+                parseFloat(taskFromBC?.funds?.toString()) > 0?(
+                  <div className="min-h-[29px] w-[110px] bg-[#2320207f] rounded-md absolute z-0 left-[245px] top-[100%] flex flex-col items-center justify-evenly border-[1px] border-[#ffffff40]">
                   <div
                     onClick={withdrawFunds}
                     className="cursor-pointer h-[29px] w-[110px] flex items-center justify-center"
@@ -326,6 +330,7 @@ function Task({ id, autoTaskId }: props) {
                     </h1>
                   </div>
                 </div>
+                ):null
               ))}
           </div>
 
