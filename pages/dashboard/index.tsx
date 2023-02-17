@@ -12,6 +12,7 @@ import { ABI } from "../../constants/constants";
 import Lottie from "lottie-react";
 import nodata from "../../public/assets/nodata.json"
 import nodatafound from "../../public/assets/nodatafound.json"
+import Gradient from "../gradient";
 
 
 
@@ -149,21 +150,21 @@ function Dashboard() {
 
   return (
     <div className="h-[100vh] w-[100vw] bg-[#000000] absolute flex flex-col justify-center items-center overflow-hidden ">
-      <div className=" h-[50px] w-[50px] bg-[#26E5FF] rounded-full absolute -top-28  opacity-10  overflow-hidden left-[95%]  shadow-[0px_0px_790px_350px_rgba(0,0,0,0.3)] shadow-[#B200FF]"></div>
       <div className="w-[100vw] h-[125px] min-h-[125px]  flex flex-col justify-center   items-center">
+       <Gradient/>
         <NavBar />
       </div>
       <div className="w-[90%] h-[100%] flex flex-col items-center justify-start    ">
-        <div className="w-[85%] h-[100px] flex flex-row items-center justify-between  ">
-          <div className="w-[30%] h-[100px] flex flex-row items-center justify-center  ">
-            <button style={{color:active?"blue":"white"}} onClick={()=>{setActive(true)}} className="text-white text-[15px]  w-[40%] h-[50px] flex items-center justify-center bg-[#141414] rounded-[15px] font-extrabold font-inter">
-              <h1 className={`${active?"text-transparent bg-clip-text bg-gradient-to-r from-[#2C004F] to-[#BD06FD]":"text-white"}`}>Active Task</h1>
+        <div className="w-[81%] h-[30%]  flex flex-row items-center justify-between  ">
+          <div className="w-[25%] h-[40%] bg-[#0A0A0A] flex flex-row items-center justify-center rounded-[20px]   ">
+            <button style={{backgroundColor:active ? "#141414" : "#0A0A0A"}} onClick={()=>{setActive(true)}} className="text-white text-[12px]  w-[45%] h-[70%] rounded-[15px] duration-500  font-bold font-inter">
+              Active Task
             </button>
-            <button onClick={()=>{setActive(false)}} className="text-white text-[15px] font-extrabold  w-[40%] h-[50px] bg-[#141414] rounded-[15px] flex items-center justify-center ml-[10px] font-inter">
-              <h1 className={`${active === false?"text-transparent bg-clip-text bg-gradient-to-r from-[#2C004F] to-[#BD06FD]":"text-white"}`}>Cancelled</h1>
+            <button style={{backgroundColor:active ? "#0A0A0A" : "#141414"}}  onClick={()=>{setActive(false)}} className="text-white text-[12px]  w-[45%] h-[70%]  rounded-[15px] duration-500 ml-[10px] font-bold font-inter">
+              Cancelled
             </button>
           </div>
-          <button  onClick={() => router.push("/newtask")} className="text-white text-[12px] min-w-[130px] w-[10%] h-[50px] bg-[#DD4747] rounded-[15px]   font-bold font-inter">
+          <button onClick={() => router.push("/newtask")} className="text-white text-[14px]  w-[12%] h-[45px] bg-[#DD4747] rounded-[15px] border  font-bold font-inter">
             Create Task
           </button>
         </div>

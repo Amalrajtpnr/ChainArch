@@ -60,3 +60,4 @@ function Home() {
 }
 
 export default dynamic(() => Promise.resolve(Home),{ssr:false});
+
