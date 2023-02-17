@@ -29,16 +29,24 @@ type props = {
   autoTaskId: any;
 };
 
-function Task({ id,autoTaskId }: props) {
-
-  const { optionsVisible,setOptionsVisible,setTaskModalVisible,taskModalVisible,gasLimitModalVisible,setGasLimitModalVisible,setWithdrawModalVisible,withdrawModalVisible } = useAppContext()
+function Task({ id, autoTaskId }: props) {
+  const {
+    optionsVisible,
+    setOptionsVisible,
+    setTaskModalVisible,
+    taskModalVisible,
+    gasLimitModalVisible,
+    setGasLimitModalVisible,
+    setWithdrawModalVisible,
+    withdrawModalVisible,
+  } = useAppContext();
   const [txmodalVisible, setTxModalVisible] = useState(false);
   const [taskFromDB, setTaskFromDB] = useState<any>({});
   const [taskFromBC, setTaskFromBC] = useState<any>({});
   const [executions, setExecutions] = useState<any[]>([]);
-  const [txStatus, setTxStatus] = useState<Status>(null)
-  const [amount, setAmount] = useState("")
-  const {address} = useAccount()
+  const [txStatus, setTxStatus] = useState<Status>(null);
+  const [amount, setAmount] = useState("");
+  const { address } = useAccount();
 
   const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
   useContractEvent({
@@ -86,136 +94,145 @@ function Task({ id,autoTaskId }: props) {
     },
   });
 
-
-
   const getTaskFromDB = async () => {
     await axios
-      .get(`https://automation-helper-production.up.railway.app/api/task?id=${id.valueOf()}`)
+      .get(
+        `https://automation-helper-production.up.railway.app/api/task?id=${id.valueOf()}`
+      )
       .then(async (res) => {
         setExecutions(res.data.executions);
         // console.log(res.data.address);
         setTaskFromDB(res.data);
-        const {contract} = await getSignedContract();
-        const task = await contract.getTaskByAddress(res.data.address)
-        setTaskFromBC(task)
+        const { contract } = await getSignedContract();
+        const task = await contract.getTaskByAddress(res.data.address);
+        setTaskFromBC(task);
       });
-     
   };
 
   const getTaskFromBackend = async () => {
-
-        const {contract} = await getSignedContract();
-        const task = await contract.getTaskById(parseInt(autoTaskId.toString()))
-        setTaskFromBC(task)
-     
+    const { contract } = await getSignedContract();
+    const task = await contract.getTaskById(parseInt(autoTaskId.toString()));
+    setTaskFromBC(task);
   };
 
-  const addFunds = async() => {
+  const addFunds = async () => {
     try {
-      setOptionsVisible(false)
+      setOptionsVisible(false);
       const executor = process.env.NEXT_PUBLIC_EXECUTOR;
       setTaskModalVisible(false);
-      const {contract} = await getSignedContract();
-      setTxModalVisible(true)
-      setTxStatus("Initiated")
-      const tx = await contract.addFunds(parseInt(autoTaskId.toString()),executor,{value:ethers.utils.parseEther(amount) ,gasLimit:100000})
-      if(tx.confirmations == 0){
-        setTxStatus('Processing');
+      const { contract } = await getSignedContract();
+      setTxModalVisible(true);
+      setTxStatus("Initiated");
+      const tx = await contract.addFunds(
+        parseInt(autoTaskId.toString()),
+        executor,
+        { value: ethers.utils.parseEther(amount), gasLimit: 100000 }
+      );
+      if (tx.confirmations == 0) {
+        setTxStatus("Processing");
       }
       const receipt = await tx.wait(1);
-      const { gasUsed } = receipt
-      if(gasUsed){
-        setTxStatus('Completed');
+      const { gasUsed } = receipt;
+      if (gasUsed) {
+        setTxStatus("Completed");
       }
-    } catch (error:any) {
-      if (error.message.toLowerCase().includes('user rejected transaction')) {
-        setTxStatus('Cancelled');
+    } catch (error: any) {
+      if (error.message.toLowerCase().includes("user rejected transaction")) {
+        setTxStatus("Cancelled");
       } else {
-        setTxStatus('Failed');
+        setTxStatus("Failed");
       }
     }
-  }
+  };
 
-
-  const updateGasLimit = async() => {
+  const updateGasLimit = async () => {
     try {
-      setOptionsVisible(false)
+      setOptionsVisible(false);
       setTaskModalVisible(false);
-      const {contract} = await getSignedContract();
-      setTxModalVisible(true)
-      setTxStatus("Initiated")
-      const tx = await contract.updateTaskGasLimit(parseInt(autoTaskId.toString()),amount,{gasLimit:100000})
-      if(tx.confirmations == 0){
-        setTxStatus('Processing');
+      const { contract } = await getSignedContract();
+      setTxModalVisible(true);
+      setTxStatus("Initiated");
+      const tx = await contract.updateTaskGasLimit(
+        parseInt(autoTaskId.toString()),
+        amount,
+        { gasLimit: 100000 }
+      );
+      if (tx.confirmations == 0) {
+        setTxStatus("Processing");
       }
       const receipt = await tx.wait(1);
-      const { gasUsed } = receipt
-      if(gasUsed){
-        setTxStatus('Completed');
+      const { gasUsed } = receipt;
+      if (gasUsed) {
+        setTxStatus("Completed");
       }
-    } catch (error:any) {
-      if (error.message.toLowerCase().includes('user rejected transaction')) {
-        setTxStatus('Cancelled');
+    } catch (error: any) {
+      if (error.message.toLowerCase().includes("user rejected transaction")) {
+        setTxStatus("Cancelled");
       } else {
-        setTxStatus('Failed');
+        setTxStatus("Failed");
       }
     }
-  }
+  };
 
-  const withdrawFunds = async() => {
+  const withdrawFunds = async () => {
     try {
-      setOptionsVisible(false)
+      setOptionsVisible(false);
       setTaskModalVisible(false);
-      const {contract} = await getSignedContract();
-      setTxModalVisible(true)
-      setTxStatus("Initiated")
-      console.log(parseInt(autoTaskId.toString()))
-      const tx = await contract.withdrawFunds(parseInt(autoTaskId.toString()),{gasLimit:100000})
-      if(tx.confirmations == 0){
-        setTxStatus('Processing');
+      const { contract } = await getSignedContract();
+      setTxModalVisible(true);
+      setTxStatus("Initiated");
+      console.log(parseInt(autoTaskId.toString()));
+      const tx = await contract.withdrawFunds(parseInt(autoTaskId.toString()), {
+        gasLimit: 100000,
+      });
+      if (tx.confirmations == 0) {
+        setTxStatus("Processing");
       }
       const receipt = await tx.wait(1);
-      const { gasUsed } = receipt
-      if(gasUsed){
-        setTxStatus('Completed');
+      const { gasUsed } = receipt;
+      if (gasUsed) {
+        setTxStatus("Completed");
       }
-    } catch (error:any) {
-      console.log(error)
-      if (error.message.toLowerCase().includes('user rejected transaction')) {
-        setTxStatus('Cancelled');
+    } catch (error: any) {
+      console.log(error);
+      if (error.message.toLowerCase().includes("user rejected transaction")) {
+        setTxStatus("Cancelled");
       } else {
-        setTxStatus('Failed');
+        setTxStatus("Failed");
       }
     }
-  }
+  };
 
-  const cancelTask = async() => {
+  const cancelTask = async () => {
     try {
-      setOptionsVisible(false)
+      setOptionsVisible(false);
       setTaskModalVisible(false);
-      const {contract} = await getSignedContract();
-      setTxModalVisible(true)
-      setTxStatus("Initiated")
-      const tx = await contract.cancelAutomation(taskFromDB.address,{gasLimit:50000})
-      if(tx.confirmations == 0){
-        setTxStatus('Processing');
+      const { contract } = await getSignedContract();
+      setTxModalVisible(true);
+      setTxStatus("Initiated");
+      const tx = await contract.cancelAutomation(
+        parseInt(autoTaskId.toString()),
+        { gasLimit: 50000 }
+      );
+      if (tx.confirmations == 0) {
+        setTxStatus("Processing");
       }
       const receipt = await tx.wait(1);
-      const { gasUsed } = receipt
-      if(gasUsed){
-        setTxStatus('Completed');
+      const { gasUsed } = receipt;
+      if (gasUsed) {
+        setTxStatus("Completed");
       }
-    } catch (error:any) {
-      if (error.message.toLowerCase().includes('user rejected transaction')) {
-        setTxStatus('Cancelled');
+    } catch (error: any) {
+      if (error.message.toLowerCase().includes("user rejected transaction")) {
+        setTxStatus("Cancelled");
       } else {
-        setTxStatus('Failed');
+        setTxStatus("Failed");
       }
     }
-  }
+  };
 
   useEffect(() => {
-    if(address){
+    if (address) {
       getTaskFromDB();
     }
   }, []);
@@ -229,7 +246,7 @@ function Task({ id,autoTaskId }: props) {
         {taskModalVisible && (
           <Addfund
             onChange={(e) => {
-              setAmount(e.target.value)
+              setAmount(e.target.value);
             }}
             onClick={() => {
               setTaskModalVisible(!taskModalVisible);
@@ -239,7 +256,7 @@ function Task({ id,autoTaskId }: props) {
         )}
         {gasLimitModalVisible && (
           <Gaslimit
-          onChange={(e) => setAmount(e.target.value)}
+            onChange={(e) => setAmount(e.target.value)}
             onClick={() => {
               setGasLimitModalVisible(false);
               setTaskModalVisible(false);
@@ -260,64 +277,69 @@ function Task({ id,autoTaskId }: props) {
               {taskFromDB.taskName}
             </h1>
             <Settings onClick={() => setOptionsVisible(!optionsVisible)} />
-            {optionsVisible && (
-              taskFromBC?.state.toString() === "0"?(
+            {optionsVisible &&
+              (taskFromBC?.state.toString() === "0" ? (
                 <div className="min-h-[29px] w-[110px] bg-[#2320207f] rounded-md absolute z-0 left-[245px] top-14 flex flex-col items-center justify-evenly border-[1px] border-[#ffffff40]">
-                <div
-                  onClick={() => {
-                    setOptionsVisible(false);
-                    setTaskModalVisible(!taskModalVisible);
-                  }}
-                  className="cursor-pointer h-[29px] w-[110px] flex items-center justify-center border-b-[1px]  border-b-[#ffffff40] "
-                >
-                  {" "}
-                  <h1 className=" text-xs text-white font-medium">Add fund</h1>
+                  <div
+                    onClick={() => {
+                      setOptionsVisible(false);
+                      setTaskModalVisible(!taskModalVisible);
+                    }}
+                    className="cursor-pointer h-[29px] w-[110px] flex items-center justify-center border-b-[1px]  border-b-[#ffffff40] "
+                  >
+                    {" "}
+                    <h1 className=" text-xs text-white font-medium">
+                      Add fund
+                    </h1>
+                  </div>
+                  <div
+                    onClick={() => {
+                      setOptionsVisible(false);
+                      setGasLimitModalVisible(!gasLimitModalVisible);
+                    }}
+                    className="cursor-pointer h-[29px] w-[110px] flex items-center justify-center border-b-[1px]  border-b-[#ffffff40]"
+                  >
+                    {" "}
+                    <h1 className=" text-xs font-medium text-white">
+                      Update Gas Limit
+                    </h1>
+                  </div>
+                  <div
+                    onClick={cancelTask}
+                    className="cursor-pointer h-[29px] w-[110px] flex items-center justify-center"
+                  >
+                    {" "}
+                    <h1 className=" text-xs font-medium text-white">
+                      Cancel Task
+                    </h1>
+                  </div>
                 </div>
-                <div
-                  onClick={() => {
-                    setOptionsVisible(false);
-                    setGasLimitModalVisible(!gasLimitModalVisible);
-                  }}
-                  className="cursor-pointer h-[29px] w-[110px] flex items-center justify-center border-b-[1px]  border-b-[#ffffff40]"
-                >
-                  {" "}
-                  <h1 className=" text-xs font-medium text-white">
-                    Update Gas Limit
-                  </h1>
-                </div>
-                <div
-                  onClick={cancelTask}
-                  className="cursor-pointer h-[29px] w-[110px] flex items-center justify-center"
-                >
-                  {" "}
-                  <h1 className=" text-xs font-medium text-white">
-                    Cancel Task
-                  </h1>
-                </div>
-              </div>
-              ):(
+              ) : (
                 <div className="min-h-[29px] w-[110px] bg-[#2320207f] rounded-md absolute z-0 left-[245px] top-14 flex flex-col items-center justify-evenly border-[1px] border-[#ffffff40]">
-                 <div
-                  onClick={withdrawFunds}
-                  className="cursor-pointer h-[29px] w-[110px] flex items-center justify-center"
-                >
-                  {" "}
-                  <h1 className=" text-xs font-medium text-white">
-                    WithDraw Funds
-                  </h1>
+                  <div
+                    onClick={withdrawFunds}
+                    className="cursor-pointer h-[29px] w-[110px] flex items-center justify-center"
+                  >
+                    {" "}
+                    <h1 className=" text-xs font-medium text-white">
+                      WithDraw Funds
+                    </h1>
+                  </div>
                 </div>
-                </div>
-              )
-            )}
+              ))}
           </div>
 
-          { taskFromBC?.state?.toString() === "1"?<Cancelled />:<Active />}
+          {taskFromBC?.state?.toString() === "1" ? <Cancelled /> : <Active />}
           <Spanaddress
             creator={taskFromBC?.creator?.toString()}
             executions={executions.length}
             cost={taskFromBC?.totalCostForExec?.toString()}
           />
-          <Address target={taskFromDB.address} balance={taskFromBC?.funds?.toString()} gasLimit={taskFromBC?.gasLimit?.toString()} />
+          <Address
+            target={taskFromDB.address}
+            balance={taskFromBC?.funds?.toString()}
+            gasLimit={taskFromBC?.gasLimit?.toString()}
+          />
         </div>
 
         <div className="h-[75%] w-[40%]  flex items-center justify-evenly flex-col  mr-36 mt-28 border-[1px] border-[#5b5757] rounded-[18px] bg-gradient-to-b from-[#2a1111] to-[#000000]  p-[2px] box-border ">
@@ -347,7 +369,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { taskId } = context.query;
   const id = taskId?.toString().slice(0, 24);
   const autoTaskId = taskId?.toString().slice(24, taskId?.toString().length);
-  console.log(autoTaskId)
+  console.log(autoTaskId);
   return {
     props: {
       id: id,

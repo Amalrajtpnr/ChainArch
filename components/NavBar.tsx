@@ -29,23 +29,29 @@ function NavBar() {
   const { openConnectModal } = useConnectModal();
   const { address, isConnected } = useAccount();
   const { openAccountModal } = useAccountModal();
-  
+
   const color = "red";
 
   return (
-    <div className="min-h-[125px]  w-[100vw] lg:min-h-[125px]  lg:w-[100vw]  sm:min-h-[30px]   flex flex-row justify-between   items-center fixed -top-1 z-100 bg-transparent ">
-      <Image src="/assets/logo1.svg" width={200} height={100} className={"ml-[60px]"}  alt=""/>
-     
+    <div className="min-h-[125px]  w-[100vw] lg:min-h-[125px]  lg:w-[100vw]  sm:min-h-[30px]   flex flex-row justify-between   items-center fixed -top-1 z-100 bg-transparent backdrop-blur-[50px] ">
+      <Image
+        src="/assets/logo1.svg"
+        width={200}
+        height={100}
+        className={"ml-[60px]"}
+        alt=""
+      />
+
       <div className="w-[60%] h-[120px] sm:min-h-[30px]  flex flex-row justify-around  items-center">
-        
         <h1
           onClick={() => {
             router.push("/dashboard");
           }}
-          style={{
-            color: router.pathname === "/dashboard" ? "#b706f5" : "gray",
-          }}
-          className="cursor-pointer lg:hover:text-white hover:text-white text-[18px] md:text-[15px] md:font-semibold font-bold font-inter"
+          className={`cursor-pointer ${
+            router.pathname === "/dashboard"
+              ? "text-[#b706f5] font-extrabold"
+              : "text-gray-400 hover:text-white hover:drop-shadow-text"
+          } text-[18px] md:text-[15px] md:font-semibold shadow-none font-bold font-inter `}
         >
           Dashboard
         </h1>
@@ -53,10 +59,11 @@ function NavBar() {
           onClick={() => {
             router.push("/docs");
           }}
-          style={{
-            color: router.pathname === "/docs" ? "#b706f5" : "gray",
-          }}
-          className="cursor-pointer text-gray-300  text-[18px] md:text-[15px] md:font-semibold  hover:text-white font-bold font-inter"
+          className={`cursor-pointer  ${
+            router.pathname === "/docs"
+              ? "text-[#b706f5] font-extrabold"
+              : "text-gray-400 hover:text-white hover:drop-shadow-text"
+          } text-[18px] md:text-[15px] md:font-semibold  hover:text-white shadow-none font-bold font-inter`}
         >
           Docs{" "}
         </h1>
@@ -64,10 +71,11 @@ function NavBar() {
           onClick={() => {
             router.push("/contactus");
           }}
-          style={{
-            color: router.pathname === "/contactus" ? "#b706f5" : "gray",
-          }}
-          className="cursor-pointer text-gray-300 hover:text-white text-[18px] md:text-[15px] md:font-semibold   font-bold font-inter"
+          className={`cursor-pointer ${
+            router.pathname === "/contactus"
+              ? "text-[#b706f5] font-extrabold"
+              : "text-gray-400 hover:text-white hover:drop-shadow-text"
+          } text-[18px] md:text-[15px] md:font-semibold shadow-none  font-bold font-inter`}
         >
           Contact Us
         </h1>
