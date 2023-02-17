@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable react/jsx-no-target-blank */
 import React, { useRef, useState } from "react";
 import NavBar from "../../components/NavBar";
 import Image from "next/image";
@@ -27,7 +29,7 @@ function ContactUs() {
         (result) => {
           // console.log(result.text);
           setLoading(false);
-          form.current.value = "";
+          form.current.reset();
         },
         (error) => {
           console.clear();
@@ -117,10 +119,10 @@ function ContactUs() {
           </div>
 
           <div className="w-[100%] h-[75%]  flex flex-row justify-center  items-center   ">
-            <div className="w-[17%] h-[68%] flex flex-col justify-start items-center bg-[#0E0E0E]  p-[17px] rounded-[20px] ">
+            <div className="w-[17%] min-w-[250px] max-w-[260px] min-h-[350px] max-h-[350px] h-[68%] flex flex-col justify-start items-center bg-[#0E0E0E]  p-[17px] rounded-[20px] ">
               <img
                 className="w-full h-[78%] rounded-[8px]"
-                src={"/assets/pranav.jpeg"}
+                src={"/assets/pranav1.jpeg"}
                 alt=""
               />
               <div className="w-[96%] h-[10%] flex flex-row justify-between   items-center mt-1">
@@ -154,7 +156,7 @@ function ContactUs() {
                     width={20}
                     src={"/assets/github 2.svg"}
                     alt=""
-                    className="m-2"
+                    className="mx-3"
                   />
                 </a>
                 <a target={"_blank"} href="https://t.me/PranavPadmanabhan">
@@ -167,7 +169,7 @@ function ContactUs() {
                 </a>
               </div>
             </div>{" "}
-            <div className="w-[17%] h-[68%] flex flex-col justify-start items-center bg-[#0E0E0E] ml-[30px] rounded-[20px] p-[17px] ">
+            <div className="w-[17%] min-w-[250px] max-w-[260px] max-h-[350px] min-h-[350px] h-[68%] flex flex-col justify-start items-center bg-[#0E0E0E] ml-[30px] rounded-[20px] p-[17px] ">
               <img
                 className="w-full h-[78%] rounded-[8px]"
                 src={"/assets/rahul.jpg"}
@@ -198,7 +200,7 @@ function ContactUs() {
                     width={20}
                     src={"/assets/github 2.svg"}
                     alt=""
-                    className="m-2"
+                    className="mx-3"
                   />
                 </a>
                 <a target={"_blank"} href="https://t.me/ravzyy">
@@ -211,7 +213,7 @@ function ContactUs() {
                 </a>
               </div>
             </div>{" "}
-            <div className="w-[17%] h-[68%] flex flex-col justify-start  items-center bg-[#0E0E0E]  ml-[30px] rounded-[20px] p-[17px] ">
+            <div className="w-[17%] min-w-[250px] max-w-[260px] min-h-[350px] max-h-[350px] h-[68%] flex flex-col justify-start  items-center bg-[#0E0E0E]  ml-[30px] rounded-[20px] p-[17px] ">
               <img
                 className="w-full h-[78%] rounded-[8px]"
                 src={"/assets/amal.jpg"}
@@ -242,7 +244,7 @@ function ContactUs() {
                     width={20}
                     src={"/assets/github 2.svg"}
                     alt=""
-                    className="m-2"
+                    className="mx-3"
                   />
                 </a>
                 <a target={"_blank"} href="https://t.me/amalrajpnr">
@@ -255,7 +257,7 @@ function ContactUs() {
                 </a>
               </div>
             </div>
-            <div className="w-[17%] h-[68%] flex flex-col justify-start items-center bg-[#0E0E0E]  ml-[30px] rounded-[20px] p-[17px] ">
+            <div className="w-[17%] min-w-[250px] max-w-[260px] min-h-[350px] max-h-[350px] h-[68%] flex flex-col justify-start items-center bg-[#0E0E0E]  ml-[30px] rounded-[20px] p-[17px] ">
               <img
                 src={"/assets/athul.jpg"}
                 className="w-full h-[78%] rounded-[8px]"
@@ -280,13 +282,13 @@ function ContactUs() {
                     alt=""
                   />
                 </a>
-                <a target={"_blank"} href="behance.net">
+                <a target={"_blank"} href="https://www.behance.net/athulvichu">
                   <Image
                     height={20}
                     width={20}
                     src={"/assets/behance 1.svg"}
                     alt=""
-                    className="m-2"
+                    className="mx-3"
                   />
                 </a>
                 <a target={"_blank"} href="https://t.me/vichu20">

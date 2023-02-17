@@ -88,9 +88,12 @@ function NewTask() {
                 const { contract } = await getSignedContract();
                 setTxModalVisible(true);
                 setTxStatus("Initiated");
+                console.log(targetAddress.value)
+                const executor = process.env.NEXT_PUBLIC_EXECUTOR;
                 const tx = await contract?.createAutomation(
-                  targetAddress.value,
+                  targetAddress.value.slice(2,targetAddress.value.length),
                   gasLimit.value,
+                  executor,
                   {
                     value: ethers.utils.parseEther(initialAmount.value),
                   }
@@ -110,7 +113,7 @@ function NewTask() {
                   }, 2000);
                 }
               } catch (error: any) {
-                // console.log(error.message)
+                console.log(error.message)
                 setId("");
                 setAutoTaskId("");
                 if (
@@ -149,11 +152,7 @@ function NewTask() {
         }
       });
     }
-    setAbi({ err: "", value: "" });
-    setGasLimit({ err: "", value: "" });
-    setInitialAmount({ err: "", value: "" });
-    setTargetAddress({ err: "", value: "" });
-    setTaskName({ err: "", value: "" });
+    
   };
 
   return (
@@ -162,11 +161,11 @@ function NewTask() {
       {/* <div className=" h-[10px] w-[10px] bg-[#26E5FF] rounded-full absolute top-72 opacity-90  shadow-[0px_0px_890px_150px_rgba(0,0,0,0.3)] shadow-[#B200FF]   overflow-hidden -left-16 "></div> */}
       <div className=" h-[100vh] w-[100vw] bg-transparent fixed top-0 z-100 backdrop-blur-[10px] flex justify-center items-center  ">
         <NavBar />
-        <div className="h-[85%] w-[40%]  flex items-center justify-center flex-col  mr-36 mt-20  ">
+        <div className="h-[85%] w-[40%]  flex items-center justify-center flex-col  mr-36 mt-[10%]  ">
           <h1 className="text-4xl tracking-wider text-white font-inter font-extrabold mr-[70px] mb-3">
             Create Task
           </h1>
-          <Lottie className="w-[450px] h-[350px]" animationData={blockchain} />
+          <Lottie className="w-[400px] h-[300px]" animationData={blockchain} />
           <h1 className="text-white w-[80%] text-start tracking-wider ml-40 my-5">
             Streamlining Daily Tasks with Automation for Increased Efficiency
             and Productivity
@@ -205,7 +204,7 @@ function NewTask() {
           </div>
 
           {!isAbiAvailable && (
-            <div className="h-[160px] w-[85%] flex items-start justify-between flex-col relative">
+            <div className="h-[160px] w-[85%] flex items-start justify-between flex-col relative mt-1">
               <h1 className="text-white text-sm font-bold my-1">ABI</h1>
               <textarea
                 style={{ resize: "none" }}
@@ -219,8 +218,6 @@ function NewTask() {
                 onChange={(e) => {
                   setAbi({ err: "", value: e.target.value });
                   try {
-                    const val = new ethers.utils.Interface(e.target.value);
-                    setAbi({ value: e.target.value, err: "" });
                     if (
                       e.target.value.includes("Automatable") &&
                       e.target.value.includes("checkAutomationStatus") &&
@@ -230,9 +227,11 @@ function NewTask() {
                     } else {
                       setAbi({
                         value: e.target.value,
-                        err: "contract doesnot follow our guideline. it's not automatable",
+                        err: "contract doesnot follow our guidelines. it's not automatable",
                       });
                     }
+                    const val = new ethers.utils.Interface(e.target.value);
+                    setAbi({ value: e.target.value, err: "" });
                   } catch (error) {
                     setAbi({ value: e.target.value, err: "Invalid ABI" });
                   }
@@ -244,7 +243,7 @@ function NewTask() {
             </div>
           )}
 
-          <div className="h-[10%] w-[85%] flex items-center justify-between">
+          <div className="h-[10%] w-[85%] flex items-center justify-between my-2">
             <div className="h-[75px] w-[46%] flex items-start justify-between flex-col relative  ">
               <h1 className="text-white text-sm font-bold my-1">Task Name</h1>
               <input
@@ -304,7 +303,7 @@ function NewTask() {
             </div>
           </div>
 
-          <div className="h-[75px] w-[85%] flex items-start justify-between flex-col relative  ">
+          <div className="h-[75px] w-[85%] flex items-start justify-between flex-col relative mt-2 ">
             <h1 className="text-white text-sm font-bold my-1">Gas Limit</h1>
             <input
               className=" h-[90%] min-h-[50px] w-[100%] pl-3 box-border bg-[#0E0E0E] flex text-sm text-white rounded-xl focus:outline-none"

@@ -39,10 +39,10 @@ function Home() {
               onClick={() => router.push("/dashboard")}
               className="h-[65%] w-[40%] rounded-[10px] bg-gradient-to-r from-[#2C004F] to-[#BD06FD] flex justify-center items-center text-white text-sm font-medium"
             >
-              Go to Dash
+              start building
             </button>
             <div className="h-[65%] w-[40%]  rounded-[10px] bg-gradient-to-r from-[#2C004F] to-[#BD06FD] flex justify-center items-center p-[2px] box-border ">
-              <button className="h-[100%] w-[100%]  rounded-[8px]  bg-[#000000] flex justify-center items-center text-white text-sm font-medium ">
+              <button onClick={() => router.push("/docs")} className="h-[100%] w-[100%]  rounded-[8px]  bg-[#000000] flex justify-center items-center text-white text-sm font-medium ">
                 Docs
               </button>
             </div>
