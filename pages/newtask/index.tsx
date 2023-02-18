@@ -88,10 +88,10 @@ function NewTask() {
                 const { contract } = await getSignedContract();
                 setTxModalVisible(true);
                 setTxStatus("Initiated");
-                console.log(targetAddress.value)
+                console.log(targetAddress.value);
                 const executor = process.env.NEXT_PUBLIC_EXECUTOR;
                 const tx = await contract?.createAutomation(
-                  targetAddress.value.slice(2,targetAddress.value.length),
+                  targetAddress.value.slice(2, targetAddress.value.length),
                   gasLimit.value,
                   executor,
                   {
@@ -113,7 +113,7 @@ function NewTask() {
                   }, 1000);
                 }
               } catch (error: any) {
-                console.log(error.message)
+                console.log(error.message);
                 setId("");
                 setAutoTaskId("");
                 if (
@@ -152,12 +152,11 @@ function NewTask() {
         }
       });
     }
-    
   };
 
   return (
     <div className="h-[100vh] w-[100vw] bg-[#000000] absolute flex overflow-hidden">
-      <div className=" h-[50px] w-[50px] bg-[#26E5FF] rounded-full absolute -top-28  opacity-40  overflow-hidden left-[95%]  shadow-[0px_0px_790px_350px_rgba(0,0,0,0.3)] shadow-[#B200FF]"></div>
+      <div className=" h-[50px] w-[50px] bg-[#26E5FF] rounded-full absolute -top-28  opacity-[0.2]  overflow-hidden left-[95%]  shadow-[0px_0px_790px_350px_rgba(0,0,0,0.3)] shadow-[#B200FF]"></div>
       {/* <div className=" h-[10px] w-[10px] bg-[#26E5FF] rounded-full absolute top-72 opacity-90  shadow-[0px_0px_890px_150px_rgba(0,0,0,0.3)] shadow-[#B200FF]   overflow-hidden -left-16 "></div> */}
       <div className=" h-[100vh] w-[100vw] bg-transparent fixed top-0 z-100 backdrop-blur-[10px] flex justify-center items-center  ">
         <NavBar />
