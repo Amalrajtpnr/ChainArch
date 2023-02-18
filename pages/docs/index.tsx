@@ -9,6 +9,8 @@ import dynamic from "next/dynamic";
 
 function Docs() {
   const [isCopied, setIsCopied] = useState(false);
+  const [isFirstCopied, setIsFirstCopied] = useState(false);
+  const [isSecondCopied, setIsSecondCopied] = useState(false);
   const [language, changeLanguage] = useState("typescript");
   const [languageDemo, changeDemo] = useState(sample.typescript);
   const [lineNumbers, toggleLineNumbers] = useState(true);
@@ -65,13 +67,31 @@ function Docs() {
     }, 3000);
   };
 
+  const handleCopyFirst = () => {
+    navigator.clipboard
+      .writeText(`yarn add chainarch`)
+      .then(() => setIsFirstCopied(true));
+    setTimeout(() => {
+      setIsFirstCopied(false);
+    }, 3000);
+  };
+
+  const handleCopySecond = () => {
+    navigator.clipboard
+      .writeText(`npm i chainarch`)
+      .then(() => setIsSecondCopied(true));
+    setTimeout(() => {
+      setIsSecondCopied(false);
+    }, 3000);
+  };
+
   return (
     <div className="h-screen overflow-y-scroll  scrollbar-hide ">
       <div className="min-h-[110vw] w-full flex flex-col items-center justify-center bg-[#000000] pt-[14vh]">
         <Gradient />
         <NavBar />
 
-        <div className="w-[70%] h-[40vh]  flex flex-col items-center justify-center  ">
+        <div className="w-[70%] h-[70vh]  flex flex-col items-center justify-center mb-8 ">
           <div className="w-[100%] h-[40%] flex flex-col items-start justify-center ">
             <h1 className="text-white font-inter font-semibold text-[25px]">
               Creating Automated Smart Contracts
@@ -85,7 +105,44 @@ function Docs() {
               human error and improves the overall security of the system.
             </h1>
           </div>
+          <h1 className="text-white self-start my-3 font-extrabold text-[24px] font-inter">
+            Use Our package
+          </h1>
+          <div className="flex items-center justify-start w-[100%] h-[60px] gap-x-5 my-2 ">
+            <div className="bg-[#0E0E0E] group  rounded-[20px] border-2 border-[#232222] w-[30%] h-[70px] flex items-center justify-between px-5">
+              <span className="text-gray-300 text-[20px]">
+                $ &nbsp;yarn add chainarch
+              </span>
+              <button
+                onClick={handleCopyFirst}
+                className="w-[60px] h-[40px] rounded-[10px] hidden group-hover:flex  flex-col justify-center items-center bg-[#212121]"
+              >
+                {isFirstCopied ? (
+                  <BsClipboardCheck size="20" color="white" />
+                ) : (
+                  <DocumentCopy size="20" color="white" />
+                )}
+              </button>
+            </div>
+            <h1 className="text-white text-[22px] mt-3">OR</h1>
+            <div className="bg-[#0E0E0E] group  rounded-[20px] border-2 border-[#232222] w-[30%] h-[70px]  flex items-center justify-between px-5">
+              <span className="text-gray-300 text-[20px]">
+                $ &nbsp;npm i chainarch
+              </span>
+              <button
+                onClick={handleCopySecond}
+                className="w-[60px] h-[40px] rounded-[10px] hidden group-hover:flex  flex-col justify-center items-center bg-[#212121]"
+              >
+                {isSecondCopied ? (
+                  <BsClipboardCheck size="20" color="white" />
+                ) : (
+                  <DocumentCopy size="20" color="white" />
+                )}
+              </button>
+            </div>
+          </div>
         </div>
+        <h1 className=""></h1>
         <div className="w-[70%] bg-[#0E0E0E] min-h-[45vh]  rounded-[20px] border-2 border-[#232222] flex flex-row items-start justify-between p-[20px] pl-[50px]">
           {/* <CopyBlock
             className="w-[100%]"
@@ -110,7 +167,8 @@ function Docs() {
               &nbsp;&nbsp;pragma solidity ^0.8.7;
               <br />
               <br />
-              &nbsp;&nbsp;import {"'"}chainarch/interfaces/automationInterface.sol{"'"};
+              &nbsp;&nbsp;import {"'"}
+              chainarch/interfaces/automationInterface.sol{"'"};
               <br />
               <br />
               &nbsp;&nbsp;contract Counter is Automatable&nbsp;{"{"}
@@ -232,4 +290,4 @@ function Docs() {
   );
 }
 
-export default dynamic(() => Promise.resolve(Docs),{ssr:false});
+export default dynamic(() => Promise.resolve(Docs), { ssr: false });
