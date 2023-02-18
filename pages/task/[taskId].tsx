@@ -24,6 +24,7 @@ import { useAppContext } from "../../contexts/AppContext";
 import { Status } from "../../constants/Types";
 import { ethers } from "ethers";
 import WithdrawModal from "../../components/FundWithDrawModal";
+import styles from "../../styles/Home.module.css";
 
 type props = {
   id: string | number;
@@ -47,49 +48,44 @@ function Task({ id, autoTaskId }: props) {
   const [executions, setExecutions] = useState<any[]>([]);
   const [txStatus, setTxStatus] = useState<Status>(null);
   const [amount, setAmount] = useState("");
-  const { address,isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
 
   const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 
-  const listenToTaskUpdate = async() => {
-    const { contract } = await getSignedContract()
-    contract.on("TaskDetailsUpdated",async() => {
+  const listenToTaskUpdate = async () => {
+    const { contract } = await getSignedContract();
+    contract.on("TaskDetailsUpdated", async () => {
       getTaskFromDB();
-    })
-  }
+    });
+  };
 
-  const listenToGasUpdate = async() => {
-    const { contract } = await getSignedContract()
-    contract.on("GasLimitUpdated",async() => {
+  const listenToGasUpdate = async () => {
+    const { contract } = await getSignedContract();
+    contract.on("GasLimitUpdated", async () => {
       getTaskFromBackend();
-    })
-  }
+    });
+  };
 
-
-
-  const listenToTaskFundWithdraw = async() => {
-    const { contract } = await getSignedContract()
-    contract.on("TaskFundWithdrawSuccess",async() => {
+  const listenToTaskFundWithdraw = async () => {
+    const { contract } = await getSignedContract();
+    contract.on("TaskFundWithdrawSuccess", async () => {
       getTaskFromBackend();
-    })
-  }
+    });
+  };
 
-
-  const listenToTaskCancellation = async() => {
-    const { contract } = await getSignedContract()
-    contract.on("AutoTaskCancelled",async() => {
+  const listenToTaskCancellation = async () => {
+    const { contract } = await getSignedContract();
+    contract.on("AutoTaskCancelled", async () => {
       getTaskFromBackend();
-    })
-  }
+    });
+  };
 
-
-  const listenToTaskFunding = async() => {
-    const { contract } = await getSignedContract()
-    contract.on("TaskFundingSuccess",async() => {
+  const listenToTaskFunding = async () => {
+    const { contract } = await getSignedContract();
+    contract.on("TaskFundingSuccess", async () => {
       getTaskFromBackend();
-    })
-  }
-
+    });
+  };
 
   const getTaskFromDB = async () => {
     await axios
@@ -146,7 +142,7 @@ function Task({ id, autoTaskId }: props) {
     try {
       setOptionsVisible(false);
       setTaskModalVisible(false);
-      setGasLimitModalVisible(false)
+      setGasLimitModalVisible(false);
       const { contract } = await getSignedContract();
       setTxModalVisible(true);
       setTxStatus("Initiated");
@@ -230,15 +226,15 @@ function Task({ id, autoTaskId }: props) {
   };
 
   useEffect(() => {
-    if (address&& isConnected) {
+    if (address && isConnected) {
       getTaskFromDB();
-      listenToGasUpdate()
-      listenToTaskCancellation()
-      listenToTaskFundWithdraw()
-      listenToTaskFunding()
-      listenToTaskUpdate()
+      listenToGasUpdate();
+      listenToTaskCancellation();
+      listenToTaskFundWithdraw();
+      listenToTaskFunding();
+      listenToTaskUpdate();
     }
-  }, [address,isConnected]);
+  }, [address, isConnected]);
 
   return (
     <div className="h-[100vh] w-[100vw] bg-[#000000] absolute flex overflow-hidden">
@@ -317,9 +313,8 @@ function Task({ id, autoTaskId }: props) {
                     </h1>
                   </div>
                 </div>
-              ) : (
-                parseFloat(taskFromBC?.funds?.toString()) > 0?(
-                  <div className="min-h-[29px] w-[110px] bg-[#2320207f] rounded-md absolute z-0 left-[245px] top-[100%] flex flex-col items-center justify-evenly border-[1px] border-[#ffffff40]">
+              ) : parseFloat(taskFromBC?.funds?.toString()) > 0 ? (
+                <div className="min-h-[29px] w-[110px] bg-[#2320207f] rounded-md absolute z-0 right-0 top-[100%] flex flex-col items-center justify-evenly border-[1px] border-[#ffffff40]">
                   <div
                     onClick={withdrawFunds}
                     className="cursor-pointer h-[29px] w-[110px] flex items-center justify-center"
@@ -330,8 +325,7 @@ function Task({ id, autoTaskId }: props) {
                     </h1>
                   </div>
                 </div>
-                ):null
-              ))}
+              ) : null)}
           </div>
 
           {taskFromBC?.state?.toString() === "1" ? <Cancelled /> : <Active />}
@@ -347,9 +341,13 @@ function Task({ id, autoTaskId }: props) {
           />
         </div>
 
-        <div className="h-[75%] w-[40%]  flex items-center justify-evenly flex-col  mr-36 mt-28 border-[1px] border-[#5b5757] rounded-[18px] bg-gradient-to-b from-[#2a1111] to-[#000000]  p-[2px] box-border ">
+        <div
+          className={`${styles.execBox} h-[75%] w-[40%]  flex items-center justify-evenly flex-col  mr-36 mt-28 border-[1px] border-[#5b5757] rounded-[18px]  backdrop-blur-[70px]  p-[2px] box-border `}
+        >
           <h1 className="text-2xl font-semibold text-white">Last executions</h1>
-          <div className="h-[89%] w-[96%]  flex items-center justify-center flex-col bg-gradient-to-tr from-[#000000] to-[#2c0b0b] border-[1px] border-[#5b5757]  rounded-[16px]">
+          <div
+            className={`${styles.execBoxInner} h-[89%] w-[96%]  flex items-center justify-center flex-col  border-[1px] border-[#5b5757]  rounded-[16px]`}
+          >
             <Datehead />
             <div className="min-h-[360px] w-[100%]  flex justify-start items-center flex-col rounded-2xl mt-2 overflow-y-scroll scrollbar-hide ">
               {executions.map((exec: any, i: number) => (

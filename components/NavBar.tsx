@@ -35,8 +35,8 @@ function NavBar() {
   return (
     <div className="min-h-[125px]  w-[100vw] lg:min-h-[125px]  lg:w-[100vw]  sm:min-h-[30px]   flex flex-row justify-between   items-center fixed -top-1 z-100 bg-transparent backdrop-blur-[50px] ">
       <Image
-        src="/assets/logo1.svg"
-        width={200}
+        src="/assets/newlogo.svg"
+        width={210}
         height={100}
         className={"ml-[60px]"}
         alt=""
