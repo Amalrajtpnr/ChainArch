@@ -10,6 +10,7 @@ import Lottie from "lottie-react";
 import message from "../../public/rocket.json";
 import styles from "../../styles/Home.module.css";
 import { ImSpinner2 } from "react-icons/im";
+import Head from "next/head";
 
 function ContactUs() {
   const [loading, setLoading] = useState(false);
@@ -41,6 +42,9 @@ function ContactUs() {
     <div
       className={`${styles.scroll} h-screen bg-[#000000]  overflow-y-scroll`}
     >
+       <Head>
+        <title>Contact Us</title>
+      </Head>
       <NavBar />
 
       <div className="h-full w-full  flex flex-row justify-center  items-end  bg-[#000000]">
