@@ -285,3 +285,21 @@
   background-color: #373737;
   border-radius: 20px;
 }
+
+.execBox {
+  background: linear-gradient(
+    180deg,
+    rgba(23, 23, 23, 0.83) 0%,
+    rgba(23, 23, 23, 0) 100%
+  );
+  backdrop-filter: blur(70.5px);
+}
+
+.execBoxInner {
+  background: linear-gradient(
+    126.94deg,
+    rgba(10, 10, 10, 0.7) 24.93%,
+    rgba(16, 16, 16, 0) 100%
+  );
+  backdrop-filter: blur(50px);
+}
