@@ -11,7 +11,7 @@ error NotAuthorized();
 
 import "./automationInterface.sol";
 
-contract SolMate {
+contract ChainArchAutomation {
     enum TaskState {
         active,
         cancelled
