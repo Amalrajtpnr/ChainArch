@@ -12,6 +12,7 @@ import { ABI } from "../../constants/constants";
 import Lottie from "lottie-react";
 import nodatafound from  "../../public/assets/nodata.json"
 import Gradient from "../gradient";
+import Head from "next/head";
 
 
 
@@ -109,6 +110,9 @@ function Dashboard() {
 
   return (
     <div className="h-[100vh] w-[100vw] bg-[#000000] absolute flex flex-col justify-center items-center overflow-hidden ">
+       <Head>
+        <title>Dashboard</title>
+      </Head>
       <div className="w-[100vw] h-[125px] min-h-[125px]  flex flex-col justify-center   items-center">
        <Gradient/>
         <NavBar />

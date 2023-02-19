@@ -24,7 +24,9 @@ import { useAppContext } from "../../contexts/AppContext";
 import { Status } from "../../constants/Types";
 import { ethers } from "ethers";
 import WithdrawModal from "../../components/FundWithDrawModal";
+import Head from "next/head";
 import styles from "../../styles/Home.module.css";
+
 
 type props = {
   id: string | number;
@@ -48,7 +50,9 @@ function Task({ id, autoTaskId }: props) {
   const [executions, setExecutions] = useState<any[]>([]);
   const [txStatus, setTxStatus] = useState<Status>(null);
   const [amount, setAmount] = useState("");
-  const { address, isConnected } = useAccount();
+  const [estimate, setEstimate] = useState("")
+
+  const { address,isConnected } = useAccount();
 
   const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 
@@ -84,8 +88,9 @@ function Task({ id, autoTaskId }: props) {
     const { contract } = await getSignedContract();
     contract.on("TaskFundingSuccess", async () => {
       getTaskFromBackend();
-    });
-  };
+    })
+  }
+
 
   const getTaskFromDB = async () => {
     await axios
@@ -175,9 +180,9 @@ function Task({ id, autoTaskId }: props) {
       const { contract } = await getSignedContract();
       setTxModalVisible(true);
       setTxStatus("Initiated");
-      console.log(parseInt(autoTaskId.toString()));
+      // console.log(parseInt(autoTaskId.toString()));
       const tx = await contract.withdrawFunds(parseInt(autoTaskId.toString()), {
-        gasLimit: 100000,
+        gasLimit: 300000,
       });
       if (tx.confirmations == 0) {
         setTxStatus("Processing");
@@ -188,7 +193,7 @@ function Task({ id, autoTaskId }: props) {
         setTxStatus("Completed");
       }
     } catch (error: any) {
-      console.log(error);
+      // console.log(error);
       if (error.message.toLowerCase().includes("user rejected transaction")) {
         setTxStatus("Cancelled");
       } else {
@@ -228,16 +233,19 @@ function Task({ id, autoTaskId }: props) {
   useEffect(() => {
     if (address && isConnected) {
       getTaskFromDB();
-      listenToGasUpdate();
-      listenToTaskCancellation();
-      listenToTaskFundWithdraw();
-      listenToTaskFunding();
-      listenToTaskUpdate();
+      listenToGasUpdate()
+      listenToTaskCancellation()
+      listenToTaskFundWithdraw()
+      listenToTaskFunding()
+      listenToTaskUpdate()
     }
   }, [address, isConnected]);
 
   return (
     <div className="h-[100vh] w-[100vw] bg-[#000000] absolute flex overflow-hidden">
+       <Head>
+        <title>Task </title>
+      </Head>
       <div className=" h-[50px] w-[50px] bg-[#26E5FF] rounded-full absolute -top-28  opacity-40  overflow-hidden left-[95%]  shadow-[0px_0px_790px_350px_rgba(0,0,0,0.3)] shadow-[#B200FF]"></div>
 
       <div className=" h-[100vh] w-[100vw] bg-transparent fixed top-0 z-100 backdrop-blur-[10px] flex justify-center items-center">
@@ -287,7 +295,7 @@ function Task({ id, autoTaskId }: props) {
                     className="cursor-pointer h-[29px] w-[110px] flex items-center justify-center border-b-[1px]  border-b-[#ffffff40] "
                   >
                     {" "}
-                    <h1 className=" text-xs text-white font-medium">
+                    <h1  className=" text-xs text-white font-medium">
                       Add fund
                     </h1>
                   </div>
@@ -333,6 +341,8 @@ function Task({ id, autoTaskId }: props) {
             creator={taskFromBC?.creator?.toString()}
             executions={executions.length}
             cost={taskFromBC?.totalCostForExec?.toString()}
+            costForNextExec={estimate}
+            cancelled={taskFromBC?.state?.toString() === "1" ?true:false}
           />
           <Address
             target={taskFromDB.address}
@@ -372,7 +382,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { taskId } = context.query;
   const id = taskId?.toString().slice(0, 24);
   const autoTaskId = taskId?.toString().slice(24, taskId?.toString().length);
-  console.log(autoTaskId);
   return {
     props: {
       id: id,

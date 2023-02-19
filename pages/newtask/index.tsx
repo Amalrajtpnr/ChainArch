@@ -12,6 +12,7 @@ import Transactionprogress from "../../components/Transactionprogress";
 import { ImSpinner2 } from "react-icons/im";
 import Lottie from "lottie-react";
 import blockchain from "../../public/assets/blockchain.json";
+import Head from "next/head";
 
 function NewTask() {
   const router = useRouter();
@@ -109,7 +110,7 @@ function NewTask() {
                   );
                   setAutoTaskId(task.id.toString());
                   setTimeout(() => {
-                    router.push(`/task/${res.data._id}${task.id.toString()}`);
+                    router.replace(`/task/${res.data._id}${task.id.toString()}`);
                   }, 1000);
                 }
               } catch (error: any) {
@@ -156,7 +157,10 @@ function NewTask() {
 
   return (
     <div className="h-[100vh] w-[100vw] bg-[#000000] absolute flex overflow-hidden">
-      <div className=" h-[50px] w-[50px] bg-[#26E5FF] rounded-full absolute -top-28  opacity-[0.2]  overflow-hidden left-[95%]  shadow-[0px_0px_790px_350px_rgba(0,0,0,0.3)] shadow-[#B200FF]"></div>
+       <Head>
+        <title>New Task</title>
+      </Head>
+      <div className=" h-[50px] w-[50px] bg-[#26E5FF] rounded-full absolute -top-28  opacity-40  overflow-hidden left-[95%]  shadow-[0px_0px_790px_350px_rgba(0,0,0,0.3)] shadow-[#B200FF]"></div>
       {/* <div className=" h-[10px] w-[10px] bg-[#26E5FF] rounded-full absolute top-72 opacity-90  shadow-[0px_0px_890px_150px_rgba(0,0,0,0.3)] shadow-[#B200FF]   overflow-hidden -left-16 "></div> */}
       <div className=" h-[100vh] w-[100vw] bg-transparent fixed top-0 z-100 backdrop-blur-[10px] flex justify-center items-center  ">
         <NavBar />

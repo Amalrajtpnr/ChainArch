@@ -6,6 +6,7 @@ import Gradient from "../gradient";
 import { CopyBlock, dracula, atomOneDark, Code } from "react-code-blocks";
 import { sample } from "../../constants/constants";
 import dynamic from "next/dynamic";
+import Head from "next/head";
 
 function Docs() {
   const [isCopied, setIsCopied] = useState(false);
@@ -87,6 +88,9 @@ function Docs() {
 
   return (
     <div className="h-screen overflow-y-scroll  scrollbar-hide ">
+       <Head>
+        <title>Docs</title>
+      </Head>
       <div className="min-h-[110vw] w-full flex flex-col items-center justify-center bg-[#000000] pt-[14vh]">
         <Gradient />
         <NavBar />
