@@ -11,9 +11,11 @@ import message from "../../public/rocket.json";
 import styles from "../../styles/Home.module.css";
 import { ImSpinner2 } from "react-icons/im";
 import Head from "next/head";
+import { BsCheckLg } from "react-icons/bs";
 
 function ContactUs() {
   const [loading, setLoading] = useState(false);
+  const [isSent, setIsSent] = useState(false);
   const form = useRef<any>();
   const sendEmail = (e: any) => {
     e.preventDefault();
@@ -31,6 +33,10 @@ function ContactUs() {
           // console.log(result.text);
           setLoading(false);
           form.current.reset();
+          setIsSent(true);
+          setTimeout(() => {
+            setIsSent(false);
+          }, 3000);
         },
         (error) => {
           console.clear();
@@ -97,6 +103,7 @@ function ContactUs() {
                   size={20}
                 />
               )}
+              {isSent && <BsCheckLg color="white" size={20} />}
             </button>
           </form>
           <div className="w-[40%] h-[70%] lg:w-[40%] lg:h-[70%]   flex flex-col justify-center  items-start pl-[50px] mb-[50px]">

@@ -89,10 +89,10 @@ function NewTask() {
                 const { contract } = await getSignedContract();
                 setTxModalVisible(true);
                 setTxStatus("Initiated");
-                console.log(targetAddress.value)
+                console.log(targetAddress.value);
                 const executor = process.env.NEXT_PUBLIC_EXECUTOR;
                 const tx = await contract?.createAutomation(
-                  targetAddress.value.slice(2,targetAddress.value.length),
+                  targetAddress.value.slice(2, targetAddress.value.length),
                   gasLimit.value,
                   executor,
                   {
@@ -114,7 +114,7 @@ function NewTask() {
                   }, 1000);
                 }
               } catch (error: any) {
-                console.log(error.message)
+                console.log(error.message);
                 setId("");
                 setAutoTaskId("");
                 if (
@@ -153,7 +153,6 @@ function NewTask() {
         }
       });
     }
-    
   };
 
   return (
