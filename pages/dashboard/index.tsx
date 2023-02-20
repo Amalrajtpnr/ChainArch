@@ -28,7 +28,7 @@ function Dashboard() {
 
   const getTasks = async() =>{
     setLoading(true)
-    await axios.get(`${API_URL}/api/tasks`).then(async(res) => {
+    await axios.get(`https://automation-helper-production.up.railway.app/api/tasks`).then(async(res) => {
       const { contract } = await getSignedContract()
       const tasks = await contract.getAllTasks();
       const filtered = tasks.filter((item:any) => item.creator.toString().toLowerCase() === address?.toLowerCase())
