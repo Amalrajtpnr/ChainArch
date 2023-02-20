@@ -96,7 +96,7 @@ function Task({ id, autoTaskId }: props) {
   const getTaskFromDB = async () => {
     await axios
       .get(
-        `${API_URL}/api/task?id=${id.valueOf()}`
+        `https://automation-helper-production.up.railway.app/api/task?id=${id.valueOf()}`
       )
       .then(async (res) => {
         setExecutions(res.data.executions);
