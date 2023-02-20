@@ -28,6 +28,8 @@ function NewTask() {
   const [txStatus, setTxStatus] = useState<Status>(null);
   const [id, setId] = useState("");
   const [autoTaskId, setAutoTaskId] = useState("");
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   const inputs = [
     { input: targetAddress, func: setTargetAddress },
     { input: abi, func: setAbi },
@@ -75,7 +77,7 @@ function NewTask() {
         setLoading(true);
         await axios
           .post(
-            "https://automation-helper-production.up.railway.app/api/newtask",
+            `${API_URL}/api/newtask`,
             {
               address: targetAddress.value,
               abi: abi.value,
@@ -127,7 +129,7 @@ function NewTask() {
                   setTxStatus("Failed");
                 }
                 await axios.delete(
-                  `https://automation-helper-production.up.railway.app/deletetask?address=${res.data.address}`
+                  `${API_URL}/deletetask?address=${res.data.address}`
                 );
                 setLoading(false);
               }
@@ -162,20 +164,22 @@ function NewTask() {
       </Head>
       <div className=" h-[50px] w-[50px] bg-[#26E5FF] rounded-full absolute -top-28  opacity-40  overflow-hidden left-[95%]  shadow-[0px_0px_790px_350px_rgba(0,0,0,0.3)] shadow-[#B200FF]"></div>
       {/* <div className=" h-[10px] w-[10px] bg-[#26E5FF] rounded-full absolute top-72 opacity-90  shadow-[0px_0px_890px_150px_rgba(0,0,0,0.3)] shadow-[#B200FF]   overflow-hidden -left-16 "></div> */}
-      <div className=" h-[100vh] w-[100vw] bg-transparent fixed top-0 z-100 backdrop-blur-[10px] flex justify-center items-center  ">
+      <div className=" h-[100vh] w-[100vw] bg-transparent fixed top-0 z-100 backdrop-blur-[10px] flex flex-col  lg:flex-row justify-center items-center  overflow-y-scroll lg:overflow-y-hidden pt-[30vh] lg:pt-0 ">
         <NavBar />
-        <div className="h-[85%] w-[40%]  flex items-center justify-center flex-col  mr-36 mt-[10%]  ">
-          <h1 className="text-4xl tracking-wider text-white font-inter font-extrabold mr-[70px] mb-3">
+        <div className="h-[85%] w-[90%] lg:w-[40%]  flex items-center justify-center flex-col mr-0  lg:mr-36 mt-[10%]  ">
+          <h1 className=" hidden lg:flex text-4xl tracking-wider text-white font-inter font-extrabold mr-[70px] mb-3">
             Create Task
           </h1>
-          <Lottie className="w-[400px] h-[300px]" animationData={blockchain} />
-          <h1 className="text-white w-[80%] text-start tracking-wider ml-40 my-5">
+          <Lottie className="w-[250px] h-[300px] -z-1 lg:w-[400px] lg:h-[300px]" animationData={blockchain} />
+          <h1 className="text-white lg:w-[80%] text-start tracking-wider ml-0 lg:ml-40 my-5">
             Streamlining Daily Tasks with Automation for Increased Efficiency
             and Productivity
           </h1>
         </div>
-
-        <div className="h-[85%] w-[37%]  rounded-xl  flex justify-evenly items-start flex-col mt-24 ">
+        <h1 className=" flex lg:hidden text-[2rem] tracking-wider text-white font-inter font-extrabold mr-[70px] mb-3">
+            Create Task
+          </h1>
+        <div className="h-[85%] w-[80%] lg:w-[37%]  rounded-xl  flex justify-evenly items-center lg:items-start flex-col mt-2 lg:mt-24 ">
           <div className="h-[85px] w-[85%] flex items-start justify-between flex-col relative  ">
             <h1 className="text-white text-sm font-bold my-1">
               Contact Address
@@ -201,13 +205,13 @@ function NewTask() {
                 }
               }}
             />
-            <span className="text-red-600 font-medium text-[13px] ml-2">
+            <span className="text-red-600 font-medium text-[10px] lg:text-[13px] ml-2">
               {targetAddress.err}
             </span>
           </div>
 
           {!isAbiAvailable && (
-            <div className="h-[160px] w-[85%] flex items-start justify-between flex-col relative mt-1">
+            <div className="h-[160px] w-[85%] flex items-start justify-between flex-col relative mt-3 lg:mt-1">
               <h1 className="text-white text-sm font-bold my-1">ABI</h1>
               <textarea
                 style={{ resize: "none" }}
@@ -240,7 +244,7 @@ function NewTask() {
                   }
                 }}
               ></textarea>
-              <span className="text-red-600 font-medium text-[13px] ml-2">
+              <span className="text-red-600 font-medium text-[10px] lg:text-[13px] ml-2">
                 {abi.err}
               </span>
             </div>
@@ -263,7 +267,7 @@ function NewTask() {
                   }
                 }}
               />
-              <span className="text-red-600 font-medium text-[13px] ml-2">
+              <span className="text-red-600 font-medium text-[10px] lg:text-[13px] ml-2">
                 {taskName.err}
               </span>
             </div>
@@ -300,13 +304,13 @@ function NewTask() {
                   }
                 }}
               />
-              <span className="text-red-600 font-medium text-[13px] ml-2">
+              <span className="text-red-600 font-medium text-[10px] lg:text-[13px] ml-2">
                 {initialAmount.err}
               </span>
             </div>
           </div>
 
-          <div className="h-[75px] w-[85%] flex items-start justify-between flex-col relative mt-2 ">
+          <div className="h-[80px] lg:h-[75px] w-[85%] flex items-start justify-between flex-col relative mt-4 lg:mt-2 ">
             <h1 className="text-white text-sm font-bold my-1">Gas Limit</h1>
             <input
               className=" h-[90%] min-h-[50px] w-[100%] pl-3 box-border bg-[#0E0E0E] flex text-sm text-white rounded-xl focus:outline-none"
@@ -336,7 +340,7 @@ function NewTask() {
           <button
             onClick={submit}
             disabled={loading ? true : false}
-            className=" h-[7%] w-[25%]  bg-gradient-to-r from-[#592D7C] to-[#260441] rounded-[15px] ml-72 text-white text-sm font-semibold  flex items-center justify-evenly"
+            className=" min-h-[40px] h-[7%] w-[45%] lg:w-[25%]  bg-gradient-to-r from-[#592D7C] to-[#260441] rounded-[15px] ml-7 mt-5 lg:mt-0 self-start  lg:ml-72 text-white text-sm font-semibold  flex items-center justify-evenly mb-8 lg:mb-0"
           >
             <span className="">Create</span>
             {loading && (

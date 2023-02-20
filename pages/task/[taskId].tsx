@@ -51,6 +51,7 @@ function Task({ id, autoTaskId }: props) {
   const [txStatus, setTxStatus] = useState<Status>(null);
   const [amount, setAmount] = useState("");
   const [estimate, setEstimate] = useState("")
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   const { address,isConnected } = useAccount();
 
@@ -95,7 +96,7 @@ function Task({ id, autoTaskId }: props) {
   const getTaskFromDB = async () => {
     await axios
       .get(
-        `https://automation-helper-production.up.railway.app/api/task?id=${id.valueOf()}`
+        `${API_URL}/api/task?id=${id.valueOf()}`
       )
       .then(async (res) => {
         setExecutions(res.data.executions);
@@ -248,7 +249,7 @@ function Task({ id, autoTaskId }: props) {
       </Head>
       <div className=" h-[50px] w-[50px] bg-[#26E5FF] rounded-full absolute -top-28  opacity-40  overflow-hidden left-[95%]  shadow-[0px_0px_790px_350px_rgba(0,0,0,0.3)] shadow-[#B200FF]"></div>
 
-      <div className=" h-[100vh] w-[100vw] bg-transparent fixed top-0 z-100 backdrop-blur-[10px] flex justify-center items-center">
+      <div className=" h-[100vh] w-[100vw] bg-transparent fixed top-0 z-100 backdrop-blur-[10px] flex flex-col lg:flex-row justify-start lg:justify-center items-center pt-[10vh] lg:pt-0 overflow-y-scroll lg:overflow-y-hidden ">
         <NavBar />
         {taskModalVisible && (
           <Addfund
@@ -278,15 +279,15 @@ function Task({ id, autoTaskId }: props) {
           />
         )}
 
-        <div className="h-[80%] w-[40%]  flex items-start justify-center flex-col  mr-36 mt-20  ml-14 pl-10 box-border ">
-          <div className="h-[10%] w-[77%]  flex justify-between items-center -mt-10 relative ">
+        <div className="h-[80%]  w-full  lg:w-[40%]  flex  items-start justify-center flex-col mr-0 lg:mr-36 mt-20 ml-0 lg:ml-14 pl-10 box-border ">
+          <div className="h-[10%] w-[90%] lg:w-[77%]  flex justify-between items-center -mt-10 relative ">
             <h1 className="text-2xl font-bold text-white">
               {taskFromDB.taskName}
             </h1>
             <Settings onClick={() => setOptionsVisible(!optionsVisible)} />
             {optionsVisible &&
               (taskFromBC?.state?.toString() === "0" ? (
-                <div className="min-h-[29px] w-[110px] bg-[#2320207f] rounded-md absolute z-0 right-0 top-14 flex flex-col items-center justify-evenly border-[1px] border-[#ffffff40]">
+                <div className="min-h-[29px] w-[110px] bg-[#2320207f] rounded-md absolute z-1 right-0 top-[100%] flex flex-col items-center justify-evenly border-[1px] border-[#ffffff40]">
                   <div
                     onClick={() => {
                       setOptionsVisible(false);
@@ -352,7 +353,7 @@ function Task({ id, autoTaskId }: props) {
         </div>
 
         <div
-          className={`${styles.execBox} h-[75%] w-[40%]  flex items-center justify-evenly flex-col  mr-36 mt-28 border-[1px] border-[#5b5757] rounded-[18px]  backdrop-blur-[70px]  p-[2px] box-border `}
+          className={`${styles.execBox} h-[75%] w-[90%] lg:w-[40%]  flex items-center justify-evenly flex-col mr-0 lg:mr-36 mt-3 lg:mt-28 border-[1px] border-[#5b5757] rounded-[18px]  backdrop-blur-[70px]  p-[2px] box-border `}
         >
           <h1 className="text-2xl font-semibold text-white">Last executions</h1>
           <div

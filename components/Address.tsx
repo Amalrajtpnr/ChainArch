@@ -11,7 +11,7 @@ type props = {
 function Address({ target,balance,gasLimit }:props) {
   const executor = process.env.NEXT_PUBLIC_EXECUTOR;
   return (
-    <div className="h-[30%] w-[75%] flex items-start flex-col justify-evenly pl-5 box-border border-2 border-[#1b0823] rounded-3xl bg-gradient-to-tr to-[#16011f] from-[#000000] mt-2">
+    <div className="h-[35vh] lg:h-[30%]  w-[95%] lg:w-[75%] flex items-start flex-col justify-evenly pl-5 box-border border-2 border-[#1b0823] rounded-3xl bg-gradient-to-tr to-[#16011f] from-[#000000] mt-2">
       <span className="text-white   text-[15px] font-medium">
         {" "}
         Target address :
