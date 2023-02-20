@@ -28,7 +28,6 @@ function NewTask() {
   const [txStatus, setTxStatus] = useState<Status>(null);
   const [id, setId] = useState("");
   const [autoTaskId, setAutoTaskId] = useState("");
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   const inputs = [
     { input: targetAddress, func: setTargetAddress },
@@ -77,7 +76,7 @@ function NewTask() {
         setLoading(true);
         await axios
           .post(
-            `${API_URL}/api/newtask`,
+            `https://automation-helper-production.up.railway.app/api/newtask`,
             {
               address: targetAddress.value,
               abi: abi.value,
@@ -129,7 +128,7 @@ function NewTask() {
                   setTxStatus("Failed");
                 }
                 await axios.delete(
-                  `${API_URL}/deletetask?address=${res.data.address}`
+                  `https://automation-helper-production.up.railway.app/deletetask?address=${res.data.address}`
                 );
                 setLoading(false);
               }
