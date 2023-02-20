@@ -4,9 +4,16 @@ import NavBar from "../components/NavBar";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import { useNetwork  } from "wagmi";
 
 function Home() {
   const router = useRouter();
+    const {chain } = useNetwork()
+  useEffect(() => {
+    if(chain?.id !== 5){
+      alert("Change Network to Goerli")
+    }
+  })
 
   return (
     <div className="h-[100vh] w-[100vw] bg-[#000000] absolute flex overflow-hidden ">
