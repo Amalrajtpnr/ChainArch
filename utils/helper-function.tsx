@@ -11,11 +11,6 @@ const RpcUrl = process.env.NEXT_PUBLIC_RPC_URL;
 //   return contract;
 // };
 
-export const getUnsignedContract = async() => {
-  const provider:any = new ethers.providers.WebSocketProvider("https://eth-goerli.g.alchemy.com/v2/k8P1hD80FRytUA1pAPhSansQ1VbC2nVI")
-  const contract:Contract = new ethers.Contract(contractAddress!, ABI, provider);
-  return contract;
-}
 
 export const getContract = async () => {
   // console.log(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS);

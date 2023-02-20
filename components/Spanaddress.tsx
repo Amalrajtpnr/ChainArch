@@ -11,7 +11,7 @@ type props = {
 
 function Spanaddress({ cost,creator,executions,costForNextExec,cancelled }:props) {
   return (
-    <div className="h-[25%] w-[90%] flex items-start flex-col justify-evenly my-3">
+    <div className="h-[40%] lg:h-[25%] w-[90%]  flex items-start flex-col justify-evenly my-3">
       <span className="text-white   text-[15px] font-medium">
         {" "}
         Created by :

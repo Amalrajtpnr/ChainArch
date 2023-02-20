@@ -15,11 +15,11 @@ function Execution({ date, hash,price }:props) {
 
   return (
     <div className="h-[7%] w-[95%] flex justify-between items-center mt-3 px-4 box-border">
-      <h1 className="text-[#9b9494] text-[11px]">{getDate()}</h1>
-      <a target={"_blank"} href={`https://goerli.etherscan.io/tx/${hash}`} className="text-[#9b9494] text-[11px] hover:underline" rel="noreferrer">
+      <h1 className="text-[#9b9494] text-[8px] lg:text-[11px]">{getDate()}</h1>
+      <a target={"_blank"} href={`https://goerli.etherscan.io/tx/${hash}`} className="text-[#9b9494] text-[8px] lg:text-[11px] hover:underline" rel="noreferrer">
         0x...{hash.slice(hash.length - 20,hash.length)}
       </a>
-      <h1 className="text-[#9b9494] text-[11px]">{price.toString().slice(0,10)} ETH</h1>
+      <h1 className="text-[#9b9494] text-[8px] lg:text-[11px]">{price.toString().slice(0,10)} ETH</h1>
     </div>
   );
 }

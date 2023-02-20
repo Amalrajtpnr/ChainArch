@@ -53,13 +53,13 @@ function ContactUs() {
       </Head>
       <NavBar />
 
-      <div className="h-full w-full  flex flex-row justify-center  items-end  bg-[#000000]">
+      <div className="h-full w-full  flex flex-col lg:flex-row justify-start lg:justify-center  items-end  bg-[#000000] pt-[15vh] lg:pt-0">
         <Gradient />
-        <div className=" w-[100%] h-[100%]    flex flex-row justify-center  items-end  ">
+        <div className=" w-[100%] h-[100%] lg:h-[100%] flex flex-col lg:flex-row justify-start lg:justify-center items-center lg:items-end  ">
           <form
             ref={form}
             onSubmit={sendEmail}
-            className="w-[40%] h-[70%]   flex flex-col justify-center   items-start mb-[50px]"
+            className="w-[80%] lg:w-[40%] h-[70%]   flex flex-col justify-center  items-center lg:items-start mb-[50px]"
           >
             <h1 className="text-white text-[16px]  font-semibold font-inter">
               Name
@@ -106,7 +106,7 @@ function ContactUs() {
               {isSent && <BsCheckLg color="white" size={20} />}
             </button>
           </form>
-          <div className="w-[40%] h-[70%] lg:w-[40%] lg:h-[70%]   flex flex-col justify-center  items-start pl-[50px] mb-[50px]">
+          <div className="hidden w-[80%] h-[70%] lg:w-[40%] lg:h-[70%]   lg:flex flex-col justify-start lg:justify-center items-center lg:items-start pl-[50px] mb-[50px]">
             <h1 className="text-white text-[40px]  font-bold font-inter">
               Talk to us
             </h1>
@@ -121,15 +121,15 @@ function ContactUs() {
           </div>
         </div>
       </div>
-      <div className="h-[100vh] w-full bg-black">
-        <div className="w-[100%] h-[100%] flex flex-col justify-center items-center  -ml-[40px] ">
+      <div className="h-[100vh] w-full bg-black -mt-[25vh] lg:mt-0  ">
+        <div className="w-[100%] h-[100%] flex flex-col justify-start lg:justify-center items-center ml-0 lg:-ml-[40px] ">
           <div className="w-[73%] h-[10%]  flex flex-col justify-center  items-start   ">
-            <h1 className="text-white text-[30px] font-inter font-bold mt-24 ">
+            <h1 className="text-white text-[30px] font-inter font-bold mt-2 lg:mt-24 ">
               Meet Our Team
             </h1>
           </div>
 
-          <div className="w-[100%] h-[75%]  flex flex-row justify-center  items-center   ">
+          <div className="w-[100%] h-[75%]  flex flex-col gap-y-6 lg:gap-y-0 lg:flex-row justify-start lg:justify-center  items-center   ">
             <div className="w-[17%] min-w-[250px] max-w-[260px] min-h-[350px] max-h-[350px] h-[68%] flex flex-col justify-start items-center bg-[#0E0E0E]  p-[17px] rounded-[20px] ">
               <img
                 className="w-full h-[78%] rounded-[8px]"
@@ -180,7 +180,7 @@ function ContactUs() {
                 </a>
               </div>
             </div>{" "}
-            <div className="w-[17%] min-w-[250px] max-w-[260px] max-h-[350px] min-h-[350px] h-[68%] flex flex-col justify-start items-center bg-[#0E0E0E] ml-[30px] rounded-[20px] p-[17px] ">
+            <div className="w-[17%] min-w-[250px] max-w-[260px] max-h-[350px] min-h-[350px] h-[68%] flex flex-col justify-start items-center bg-[#0E0E0E] ml-0 lg:ml-[30px] rounded-[20px] p-[17px] ">
               <img
                 className="w-full h-[78%] rounded-[8px]"
                 src={"/assets/rahul.jpg"}
@@ -224,7 +224,7 @@ function ContactUs() {
                 </a>
               </div>
             </div>{" "}
-            <div className="w-[17%] min-w-[250px] max-w-[260px] min-h-[350px] max-h-[350px] h-[68%] flex flex-col justify-start  items-center bg-[#0E0E0E]  ml-[30px] rounded-[20px] p-[17px] ">
+            <div className="w-[17%] min-w-[250px] max-w-[260px] min-h-[350px] max-h-[350px] h-[68%] flex flex-col justify-start  items-center bg-[#0E0E0E] ml-0 lg:ml-[30px] rounded-[20px] p-[17px] ">
               <img
                 className="w-full h-[78%] rounded-[8px]"
                 src={"/assets/amal.jpg"}
@@ -268,7 +268,7 @@ function ContactUs() {
                 </a>
               </div>
             </div>
-            <div className="w-[17%] min-w-[250px] max-w-[260px] min-h-[350px] max-h-[350px] h-[68%] flex flex-col justify-start items-center bg-[#0E0E0E]  ml-[30px] rounded-[20px] p-[17px] ">
+            <div className="w-[17%] min-w-[250px] max-w-[260px] min-h-[350px] max-h-[350px] h-[68%] flex flex-col justify-start items-center bg-[#0E0E0E] ml-0 lg:ml-[30px] rounded-[20px] p-[17px] ">
               <img
                 src={"/assets/athul.jpg"}
                 className="w-full h-[78%] rounded-[8px]"
