@@ -103,7 +103,7 @@ function NavBar() {
         ) : (
           <button
             onClick={openConnectModal}
-            className="flex items-center justify-center text-white text-[18px] md:text-[15px] md:font-semibold   w-[19%] h-[45px] bg-gradient-to-r from-[#2C004F] to-[#BD06FD] rounded-[18px] mr-[20px]  font-bold font-inter"
+            className="hidden lg:flex items-center justify-center text-white text-[18px] md:text-[15px] md:font-semibold   w-[19%] h-[45px] bg-gradient-to-r from-[#2C004F] to-[#BD06FD] rounded-[18px] mr-[20px]  font-bold font-inter"
           >
             Connect Wallet
           </button>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import NavBar from "../../components/NavBar";
 import dynamic from "next/dynamic";
@@ -13,6 +13,7 @@ import { ImSpinner2 } from "react-icons/im";
 import Lottie from "lottie-react";
 import blockchain from "../../public/assets/blockchain.json";
 import Head from "next/head";
+import { useNetwork  } from "wagmi";
 
 function NewTask() {
   const router = useRouter();
@@ -28,6 +29,14 @@ function NewTask() {
   const [txStatus, setTxStatus] = useState<Status>(null);
   const [id, setId] = useState("");
   const [autoTaskId, setAutoTaskId] = useState("");
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  
+      const {chain } = useNetwork()
+  useEffect(() => {
+    if(chain?.id !== 5){
+      alert("Change Network to Goerli")
+    }
+  })
 
   const inputs = [
     { input: targetAddress, func: setTargetAddress },
@@ -70,7 +79,8 @@ function NewTask() {
       abi.value !== "" &&
       initialAmount.value !== "" &&
       gasLimit.value !== "" &&
-      taskName.value !== ""
+      taskName.value !== "" &&
+      chain?.id == 5
     ) {
       try {
         setLoading(true);
