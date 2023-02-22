@@ -33,7 +33,7 @@ function NewTask() {
   
       const {chain } = useNetwork()
   useEffect(() => {
-    if(chain?.id !== 5){
+    if(address && chain?.id !== 5){
       alert("Change Network to Goerli")
     }
   })

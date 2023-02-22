@@ -4,13 +4,14 @@ import NavBar from "../components/NavBar";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import { useNetwork  } from "wagmi";
+import { useAccount, useNetwork  } from "wagmi";
 
 function Home() {
   const router = useRouter();
     const {chain } = useNetwork()
+    const { address } = useAccount()
   useEffect(() => {
-    if(chain?.id !== 5){
+    if(address && chain?.id !== 5){
       alert("Change Network to Goerli")
     }
   })
