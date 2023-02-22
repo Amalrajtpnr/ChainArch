@@ -101,7 +101,7 @@ function NavBar() {
             </button>
           </div>
         ) : (
-          <button
+          <button 
             onClick={openConnectModal}
             className="hidden lg:flex items-center justify-center text-white text-[18px] md:text-[15px] md:font-semibold   w-[19%] h-[45px] bg-gradient-to-r from-[#2C004F] to-[#BD06FD] rounded-[18px] mr-[20px]  font-bold font-inter"
           >
@@ -116,7 +116,7 @@ function NavBar() {
             className=""
           />
           {isModalOpen && (
-            <div className="absolute z-[100] flex flex-col items-center justify-start top-[115%] right-0 w-[150px] min-h-[40px] border-[1px]  border-[#BD06FD] bg-[rgba(0,0,0,0.7)] rounded-lg overflow-hidden ">
+            <div className="absolute z-[10000] flex flex-col items-center justify-start top-[115%] right-0 w-[150px] min-h-[40px] border-[1px]  border-[#BD06FD] bg-[rgba(0,0,0,0.7)] rounded-lg overflow-hidden ">
               <div
                 onClick={() => {
                   router.push("/dashboard");

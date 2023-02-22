@@ -51,7 +51,6 @@ function Task({ id, autoTaskId }: props) {
   const [txStatus, setTxStatus] = useState<Status>(null);
   const [amount, setAmount] = useState("");
   const [estimate, setEstimate] = useState("")
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   const { address,isConnected } = useAccount();
 

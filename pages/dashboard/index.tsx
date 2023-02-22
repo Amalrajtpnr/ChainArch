@@ -24,7 +24,6 @@ function Dashboard() {
   const [tasks, setTasks] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
   const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   const getTasks = async() =>{
     setLoading(true)

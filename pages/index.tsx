@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import NavBar from "../components/NavBar";
 import { useRouter } from "next/router";

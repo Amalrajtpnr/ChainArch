@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import NavBar from "../../components/NavBar";
 import dynamic from "next/dynamic";
