@@ -95,7 +95,7 @@ function Task({ id, autoTaskId }: props) {
   const getTaskFromDB = async () => {
     await axios
       .get(
-        `https://automation-helper-production.up.railway.app/api/task?id=${id.valueOf()}`
+        `https://crowded-tan-veil.cyclic.app/api/task?id=${id.valueOf()}`
       )
       .then(async (res) => {
         setExecutions(res.data.executions);

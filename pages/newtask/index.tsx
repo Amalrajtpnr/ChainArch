@@ -86,7 +86,7 @@ function NewTask() {
         setLoading(true);
         await axios
           .post(
-            `https://automation-helper-production.up.railway.app/api/newtask`,
+            `https://crowded-tan-veil.cyclic.app/api/newtask`,
             {
               address: targetAddress.value,
               abi: abi.value,
@@ -138,7 +138,7 @@ function NewTask() {
                   setTxStatus("Failed");
                 }
                 await axios.delete(
-                  `https://automation-helper-production.up.railway.app/deletetask?address=${res.data.address}`
+                  `https://crowded-tan-veil.cyclic.app/deletetask?address=${res.data.address}`
                 );
                 setLoading(false);
               }
